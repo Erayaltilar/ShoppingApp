@@ -1,0 +1,15 @@
+package com.example.eray_altilar_final.data.mapper
+
+import com.example.eray_altilar_final.data.local.entity.CartEntity
+import com.example.eray_altilar_final.domain.model.cartmodel.Cart
+
+fun CartEntity.toCart(): Cart {
+    return Cart(
+        cartId = cartId,
+        productId = productId,
+        name = name,
+        thumbnail = thumbnail,
+        price = price,
+        userId = userId
+    )
+}
