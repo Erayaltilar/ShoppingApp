@@ -9,6 +9,7 @@ import com.example.eray_altilar_final.data.remote.UserApi
 import com.example.eray_altilar_final.domain.model.LoginRequest
 import com.example.eray_altilar_final.domain.model.LoginResponse
 import com.example.eray_altilar_final.domain.model.usermodel.User
+import com.example.eray_altilar_final.domain.model.usermodel.UserUpdateRequest
 import com.example.eray_altilar_final.domain.model.usermodel.Users
 import com.example.eray_altilar_final.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
@@ -25,6 +26,12 @@ class UserRepositoryImpl @Inject constructor(
         emit(Resource.Success(data.toUsers()))
     }
 
+    override fun getUserById(id: Long): Flow<Resource<User>> = flow {
+        emit(Resource.Loading())
+        val response = userApi.getUserById(id = id)
+        emit(Resource.Success(data = response.toUser()))
+    }
+
     override fun filterUsers(key: String, value: String): Flow<Resource<User>> = flow {
         emit(Resource.Loading())
         val response = userApi.filterUsers(key = key, value = value)
@@ -35,5 +42,9 @@ class UserRepositoryImpl @Inject constructor(
         emit(Resource.Loading())
         val response = userApi.login(loginInfo.toLoginRequestDto())
         emit(Resource.Success(data = response.toLoginResponse()))
+    }
+
+    override fun updateUser(userUpdateRequest: UserUpdateRequest): Flow<Resource<User>> {
+        TODO("Not yet implemented")
     }
 }

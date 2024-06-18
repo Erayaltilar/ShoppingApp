@@ -7,7 +7,6 @@ import retrofit2.http.Query
 
 interface ProductService {
 
-    //get product by id
     @GET("products/{id}")
     suspend fun getProductById(
         @Path("id") id: Long

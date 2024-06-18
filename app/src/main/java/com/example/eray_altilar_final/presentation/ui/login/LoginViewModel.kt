@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
+import com.example.eray_altilar_final.core.SharedPreferencesManager.saveToken
+import com.example.eray_altilar_final.core.SharedPreferencesManager.saveUserId
 import com.example.eray_altilar_final.domain.model.LoginRequest
 import com.example.eray_altilar_final.domain.model.LoginResponse
 import com.example.eray_altilar_final.domain.model.usermodel.Users
@@ -57,8 +59,9 @@ class LoginViewModel @Inject constructor(
                 is Resource.Success -> {
                     _loginState.value = Resource.Success(it.data!!)
                     Log.d("TOKEN",it.data.token)
+                    saveToken(it.data.token)
+                    Log.d("USER", it.data.user.toString())
                 }
-
                 is Resource.Error -> {
                     _loginState.value = Resource.Error(it.errorMessage)
                 }

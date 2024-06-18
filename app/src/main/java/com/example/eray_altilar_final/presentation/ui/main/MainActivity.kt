@@ -9,6 +9,7 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.eray_altilar_final.R
+import com.example.eray_altilar_final.core.SharedPreferencesManager
 import com.example.eray_altilar_final.databinding.ActivityMainBinding
 import com.example.eray_altilar_final.databinding.DrawerHeaderBinding
 import com.example.eray_altilar_final.presentation.ui.cart.CartFragment
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        SharedPreferencesManager.init(this)
 
         navContent = binding.navHostFragment
         val navigation = binding.navigationView

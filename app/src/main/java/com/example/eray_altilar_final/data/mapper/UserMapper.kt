@@ -3,8 +3,10 @@ package com.example.eray_altilar_final.data.mapper
 import com.example.eray_altilar_final.data.remote.dto.UserResult
 import com.example.eray_altilar_final.data.remote.dto.userdto.AddressDto
 import com.example.eray_altilar_final.data.remote.dto.userdto.UserDto
+import com.example.eray_altilar_final.data.remote.dto.userdto.UserUpdateRequestDto
 import com.example.eray_altilar_final.domain.model.usermodel.Address
 import com.example.eray_altilar_final.domain.model.usermodel.User
+import com.example.eray_altilar_final.domain.model.usermodel.UserUpdateRequest
 import com.example.eray_altilar_final.domain.model.usermodel.Users
 
 fun UserResult.toUsers(): Users {
@@ -44,6 +46,14 @@ fun AddressDto.toAddress(): Address {
         country = country,
         stateCode = stateCode,
         postalCode = postalCode,
+    )
+}
+
+fun UserUpdateRequestDto.toUserUpdateRequest(): UserUpdateRequest {
+    return UserUpdateRequest(
+        firstName = firstName,
+        lastName = lastName,
+        email = email,
     )
 }
 

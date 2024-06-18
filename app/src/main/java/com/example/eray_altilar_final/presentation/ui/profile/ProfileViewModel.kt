@@ -1,9 +1,13 @@
 package com.example.eray_altilar_final.presentation.ui.profile
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
+import com.example.eray_altilar_final.core.SharedPreferencesManager.getUserId
+import com.example.eray_altilar_final.domain.model.usermodel.User
 import com.example.eray_altilar_final.domain.model.usermodel.Users
+import com.example.eray_altilar_final.domain.usecase.GetUserByIdUseCase
 import com.example.eray_altilar_final.domain.usecase.GetUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,20 +17,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val getUsersUseCase: GetUsersUseCase
+    private val getUserByIdUseCase: GetUserByIdUseCase,
 ) : ViewModel() {
-    private val _users = MutableStateFlow<Resource<Users>>(Resource.Loading())
-    val users: StateFlow<Resource<Users>> get() = _users
+
+    private val _user = MutableStateFlow<Resource<User>>(Resource.Loading())
+    val user: StateFlow<Resource<User>> get() = _user
 
     init {
-        getUsers()
+        val userId = getUserId()
+        getUser(userId)
+        Log.d("UserID",  "init: $userId")
     }
 
-    private fun getUsers() {
+    private fun getUser(userId: Long) {
         viewModelScope.launch {
-            getUsersUseCase()
+            getUserByIdUseCase(userId)
                 .collect { result ->
-                    _users.value = result
+                    _user.value = result
                 }
         }
     }

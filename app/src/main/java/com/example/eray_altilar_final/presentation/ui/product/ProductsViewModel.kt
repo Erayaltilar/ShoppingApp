@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
+import com.example.eray_altilar_final.core.SharedPreferencesManager.getToken
 import com.example.eray_altilar_final.domain.model.cartmodel.Cart
 import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.domain.model.productmodel.Products
@@ -29,9 +30,10 @@ class ProductsViewModel @Inject constructor(
     val products: StateFlow<Resource<Products>> get() = _products
 
     private var currentPage = 0
-    private val pageSize = 30
+    private val pageSize = 10
 
     init {
+        Log.d("TOKEN  PRODUCTS", getToken()!!)
         loadProducts()
     }
 
