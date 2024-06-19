@@ -12,7 +12,9 @@ interface UserRepository {
 
     fun getUsers(): Flow<Resource<Users>>
     fun getUserById(id: Long): Flow<Resource<User>>
+    fun getUserByToken(token: String): Flow<Resource<User>>
     fun filterUsers(key: String, value: String): Flow<Resource<User>>
     fun login(loginInfo: LoginRequest): Flow<Resource<LoginResponse>>
-    fun updateUser(userUpdateRequest: UserUpdateRequest): Flow<Resource<User>>
+    fun updateUser(id : Long,userUpdateRequest: UserUpdateRequest): Flow<Resource<User>>
+
 }

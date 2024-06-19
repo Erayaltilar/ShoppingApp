@@ -1,18 +1,17 @@
 package com.example.eray_altilar_final.presentation.ui.login
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
 import com.example.eray_altilar_final.core.SharedPreferencesManager.saveToken
-import com.example.eray_altilar_final.core.SharedPreferencesManager.saveUserId
 import com.example.eray_altilar_final.domain.model.LoginRequest
 import com.example.eray_altilar_final.domain.model.LoginResponse
+import com.example.eray_altilar_final.domain.model.usermodel.User
 import com.example.eray_altilar_final.domain.model.usermodel.Users
-import com.example.eray_altilar_final.domain.usecase.GetUsersUseCase
-import com.example.eray_altilar_final.domain.usecase.LoginUseCase
+import com.example.eray_altilar_final.domain.usecase.user.GetUserByTokenUseCase
+import com.example.eray_altilar_final.domain.usecase.user.GetUsersUseCase
+import com.example.eray_altilar_final.domain.usecase.user.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,6 +24,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     val getUsersUseCase: GetUsersUseCase,
     val loginUseCase: LoginUseCase,
+    val getUserByTokenUseCase: GetUserByTokenUseCase,
 ) : ViewModel() {
 
     private val _users = MutableStateFlow<Resource<Users>>(Resource.Loading())
@@ -35,6 +35,9 @@ class LoginViewModel @Inject constructor(
 
     private val _loginState = MutableStateFlow<Resource<LoginResponse>>(Resource.Loading())
     val loginState: StateFlow<Resource<LoginResponse>> get() = _loginState
+
+    private val _user = MutableStateFlow<Resource<User>>(Resource.Loading())
+    val user: StateFlow<Resource<User>> get() = _user
 
     init {
         getUsers()
@@ -58,10 +61,10 @@ class LoginViewModel @Inject constructor(
 
                 is Resource.Success -> {
                     _loginState.value = Resource.Success(it.data!!)
-                    Log.d("TOKEN",it.data.token)
+                    Log.d("TOKEN", it.data.token)
                     saveToken(it.data.token)
-                    Log.d("USER", it.data.user.toString())
                 }
+
                 is Resource.Error -> {
                     _loginState.value = Resource.Error(it.errorMessage)
                 }

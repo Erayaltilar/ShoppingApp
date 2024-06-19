@@ -4,6 +4,7 @@ import com.example.eray_altilar_final.core.Resource
 import com.example.eray_altilar_final.data.mapper.toLoginRequestDto
 import com.example.eray_altilar_final.data.mapper.toLoginResponse
 import com.example.eray_altilar_final.data.mapper.toUser
+import com.example.eray_altilar_final.data.mapper.toUserUpdateRequestDto
 import com.example.eray_altilar_final.data.mapper.toUsers
 import com.example.eray_altilar_final.data.remote.UserApi
 import com.example.eray_altilar_final.domain.model.LoginRequest
@@ -32,6 +33,12 @@ class UserRepositoryImpl @Inject constructor(
         emit(Resource.Success(data = response.toUser()))
     }
 
+    override fun getUserByToken(token: String): Flow<Resource<User>> = flow {
+        emit(Resource.Loading())
+        val response = userApi.getUserByToken(token = token)
+        emit(Resource.Success(data = response.toUser()))
+    }
+
     override fun filterUsers(key: String, value: String): Flow<Resource<User>> = flow {
         emit(Resource.Loading())
         val response = userApi.filterUsers(key = key, value = value)
@@ -44,7 +51,10 @@ class UserRepositoryImpl @Inject constructor(
         emit(Resource.Success(data = response.toLoginResponse()))
     }
 
-    override fun updateUser(userUpdateRequest: UserUpdateRequest): Flow<Resource<User>> {
-        TODO("Not yet implemented")
+    override fun updateUser(id: Long, userUpdateRequest: UserUpdateRequest): Flow<Resource<User>> = flow {
+        emit(Resource.Loading())
+        val response = userApi.updateUser(id, userUpdateRequest.toUserUpdateRequestDto())
+        emit(Resource.Success(data = response.toUser()))
+
     }
 }

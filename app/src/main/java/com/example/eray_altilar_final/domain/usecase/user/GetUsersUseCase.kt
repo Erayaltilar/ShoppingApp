@@ -1,4 +1,4 @@
-package com.example.eray_altilar_final.domain.usecase
+package com.example.eray_altilar_final.domain.usecase.user
 
 import com.example.eray_altilar_final.core.Resource
 import com.example.eray_altilar_final.domain.model.usermodel.Users

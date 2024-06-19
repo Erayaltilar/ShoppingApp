@@ -7,6 +7,7 @@ import com.example.eray_altilar_final.data.remote.dto.userdto.UserDto
 import com.example.eray_altilar_final.data.remote.dto.userdto.UserUpdateRequestDto
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -24,6 +25,9 @@ interface UserApi {
 
     @GET("users/{id}")
     suspend fun getUserById(@Path("id") id: Long): UserDto
+
+    @GET("auth/me")
+    suspend fun getUserByToken(@Header("Authorization") token: String): UserDto
 
     @GET("users/filter")
     suspend fun filterUsers(
