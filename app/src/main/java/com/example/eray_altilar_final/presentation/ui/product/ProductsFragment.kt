@@ -38,7 +38,7 @@ class ProductsFragment : Fragment() {
                 ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner)
             )
             setContent {
-                ProductScreen(1,viewModel)
+                ProductScreen()
             }
         }
     }

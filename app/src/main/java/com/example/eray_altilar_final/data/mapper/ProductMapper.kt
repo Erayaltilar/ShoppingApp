@@ -1,8 +1,10 @@
 package com.example.eray_altilar_final.data.mapper
 
 import com.example.eray_altilar_final.data.remote.dto.ProductResult
+import com.example.eray_altilar_final.data.remote.dto.productdto.CategoryDto
 import com.example.eray_altilar_final.data.remote.dto.productdto.ProductDto
 import com.example.eray_altilar_final.data.remote.dto.productdto.ReviewDto
+import com.example.eray_altilar_final.domain.model.productmodel.Category
 import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.domain.model.productmodel.Products
 import com.example.eray_altilar_final.domain.model.productmodel.Review
@@ -32,14 +34,14 @@ fun ProductDto.toProduct(): Product {
         warrantyInformation = warrantyInformation,
         shippingInformation = shippingInformation,
         availabilityStatus = availabilityStatus,
-        reviews = reviews.map { it.toReview() },
+        reviews = reviews?.map { it.toReview() },
         minimumOrderQuantity = minimumOrderQuantity,
         images = images,
         thumbnail = thumbnail,
     )
 }
 
-fun Product.toProductDto() : ProductDto {
+fun Product.toProductDto(): ProductDto {
     return ProductDto(
         id = id,
         title = title,
@@ -55,15 +57,23 @@ fun Product.toProductDto() : ProductDto {
         warrantyInformation = warrantyInformation,
         shippingInformation = shippingInformation,
         availabilityStatus = availabilityStatus,
-        reviews = reviews.map { it.toReviewDto() },
+        reviews = reviews?.map { it.toReviewDto() },
         minimumOrderQuantity = minimumOrderQuantity,
         images = images,
         thumbnail = thumbnail,
 
+        )
+}
+
+fun CategoryDto.toCategory(): Category {
+    return Category(
+        slug = slug,
+        name = name,
+        url = url,
     )
 }
 
-fun Review.toReviewDto() : ReviewDto {
+fun Review.toReviewDto(): ReviewDto {
     return ReviewDto(
         rating = rating,
         comment = comment,
@@ -72,6 +82,7 @@ fun Review.toReviewDto() : ReviewDto {
         reviewerEmail = reviewerEmail,
     )
 }
+
 
 fun ReviewDto.toReview(): Review {
     return Review(
