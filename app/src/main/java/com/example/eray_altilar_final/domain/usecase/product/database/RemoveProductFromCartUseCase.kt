@@ -1,4 +1,4 @@
-package com.example.eray_altilar_final.domain.usecase
+package com.example.eray_altilar_final.domain.usecase.product.database
 
 import com.example.eray_altilar_final.core.Resource
 import com.example.eray_altilar_final.domain.repository.DatabaseRepository

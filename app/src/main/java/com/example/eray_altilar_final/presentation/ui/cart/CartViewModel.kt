@@ -4,14 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
 import com.example.eray_altilar_final.domain.model.cartmodel.Cart
-import com.example.eray_altilar_final.domain.model.productmodel.Products
-import com.example.eray_altilar_final.domain.usecase.GetProductsInCartUseCase
+import com.example.eray_altilar_final.domain.usecase.product.database.GetProductsInCartUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
