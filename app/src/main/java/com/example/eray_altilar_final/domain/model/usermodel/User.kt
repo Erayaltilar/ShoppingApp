@@ -15,5 +15,5 @@ data class User (
     val bloodGroup: String,
     val height: Double,
     val weight: Double,
-    val address: Address,
+    val address: Address?,
 )

@@ -15,6 +15,6 @@ data class UserDto (
     val bloodGroup: String,
     val height: Double,
     val weight: Double,
-    val address: AddressDto,
+    val address: AddressDto?,
 
 )

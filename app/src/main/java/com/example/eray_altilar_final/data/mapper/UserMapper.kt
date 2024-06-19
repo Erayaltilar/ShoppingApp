@@ -34,7 +34,7 @@ fun UserDto.toUser(): User {
         bloodGroup = bloodGroup,
         height = height,
         weight = weight,
-        address = address.toAddress(),
+        address = address?.toAddress(),
     )
 }
 
@@ -56,6 +56,15 @@ fun UserUpdateRequestDto.toUserUpdateRequest(): UserUpdateRequest {
         email = email,
     )
 }
+fun UserUpdateRequest.toUserUpdateRequestDto(): UserUpdateRequestDto {
+    return UserUpdateRequestDto(
+        firstName = firstName,
+        lastName = lastName,
+        email = email,
+    )
+}
+
+
 
 
 
