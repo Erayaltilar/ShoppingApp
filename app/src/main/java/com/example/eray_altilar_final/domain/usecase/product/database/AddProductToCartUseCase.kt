@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class AddProductToCartUseCase @Inject constructor(
-    private val repository: DatabaseRepository
+    private val repository: DatabaseRepository,
 ) {
     operator fun invoke(userId: Long, productId: Long, name: String, price: Double, thumbnail: String): Flow<Resource<Cart>> {
-        return repository.addProductToCart(userId,productId,name,price,thumbnail)
+        return repository.addProductToCart(userId, productId, name, price, thumbnail)
     }
 }

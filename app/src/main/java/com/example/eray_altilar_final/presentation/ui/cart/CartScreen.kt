@@ -1,5 +1,6 @@
 package com.example.eray_altilar_final.presentation.ui.cart
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,6 +37,7 @@ fun CartScreen(viewModel :  CartViewModel = hiltViewModel()) {
                 }
             }
             is Resource.Success -> {
+                Log.d("CART SIZE", result.data?.size.toString())
                 items(result.data?.size ?: 0) { item ->
                     val product = result.data?.get(item)
                     Column {
