@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
+import com.example.eray_altilar_final.core.SharedPreferencesManager
 import com.example.eray_altilar_final.core.SharedPreferencesManager.getToken
+import com.example.eray_altilar_final.domain.model.cartmodel.Cart
 import com.example.eray_altilar_final.domain.model.productmodel.Category
 import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.domain.model.productmodel.Products
@@ -28,15 +30,13 @@ class ProductsViewModel @Inject constructor(
     private val addProductToCartUseCase: AddProductToCartUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val getProductsByCategoryUseCase: GetProductsByCategoryUseCase
-
-
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchScreenUIState())
     val uiState: StateFlow<SearchScreenUIState> = _uiState.asStateFlow()
 
     private var currentPage = 0
-    private val pageSize = 10
+    private val pageSize = 30
 
 
     init {
@@ -140,28 +140,32 @@ class ProductsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun addProductToCart(userId: Long, product: Product) {
-        viewModelScope.launch {
-            addProductToCartUseCase(
-                userId = userId,
-                productId = product.id!!,
-                name = product.title!!,
-                price = product.price!!,
-                thumbnail = product.thumbnail.orEmpty(),
-            ).collect { result ->
-                if (result is Resource.Success) {
-                    Log.d("productViewModel", "addProductToCart: ${result.data}")
+    fun addProductToCart(userId: Long, productId: Long, name: String, price: Double, thumbnail: String) {
+        addProductToCartUseCase(userId, productId, name, price, thumbnail).onEach {
+            when (it) {
+                is Resource.Loading -> {}
+
+                is Resource.Success -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            isSuccessAddToCart = true,
+                        )
+                    }
+                    Log.d("TAG", "addProductToCart: ${it.data}")
                 }
-                if (result is Resource.Error) {
-                    Log.d("productViewModel", "addProductToCart: ${result.errorMessage}")
+
+                is Resource.Error -> {
+                    Log.d("TAG", "addProductToCart: ${it.errorMessage}")
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     data class SearchScreenUIState(
         val loadingState: Boolean = false,
         val isHaveError: Boolean = false,
+        val isLiked: Boolean = true,
+        val isSuccessAddToCart: Boolean = false,
         val isSuccess: Boolean = false,
         val isSuccessForGetProducts: Boolean = false,
         val isSuccessForCategory: Boolean = false,
