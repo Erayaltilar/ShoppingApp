@@ -21,11 +21,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.eray_altilar_final.R
 import com.example.eray_altilar_final.core.Resource
+import com.example.eray_altilar_final.presentation.theme.Dimen
 import com.example.eray_altilar_final.presentation.theme.ErayAltilarFinalTheme
 
 @Composable
@@ -40,9 +43,7 @@ fun LoginScreen(
 
     when (state) {
         is Resource.Loading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
+            /* sonar-comment */
         }
 
         is Resource.Success -> {
@@ -57,31 +58,31 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center
+            .padding(Dimen.spacing_m1),
+        verticalArrangement = Arrangement.Center,
     ) {
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Username") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text(stringResource(R.string.username)) },
+            modifier = Modifier.fillMaxWidth(),
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(Dimen.spacing_m1))
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text(stringResource(R.string.password)) },
             visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(Dimen.spacing_m1))
         Button(
             onClick = {
                 viewModel.login("michaelw", "michaelwpass")
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            Text("Login")
+            Text(stringResource(R.string.login))
         }
 
 
