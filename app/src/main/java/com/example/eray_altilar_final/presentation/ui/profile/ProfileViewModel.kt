@@ -20,7 +20,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val getUserByIdUseCase: GetUserByIdUseCase,
     private val getUserByTokenUseCase: GetUserByTokenUseCase,
     private val updateUserUseCase: UpdateUserUseCase,
 ) : ViewModel() {
@@ -31,8 +30,6 @@ class ProfileViewModel @Inject constructor(
     init {
         val token = getToken()
         getUserByToken(token)
-
-
     }
 
     fun updateUser(id: Long, userUpdateRequest: UserUpdateRequest) {
@@ -62,7 +59,6 @@ class ProfileViewModel @Inject constructor(
 
                 is Resource.Success -> {
                     _user.value = Resource.Success(it.data!!)
-                    Log.d("CurrentUserEmail", "getUser: ${it.data}")
                 }
 
                 is Resource.Error -> {
@@ -70,15 +66,5 @@ class ProfileViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
-    }
-
-    private fun getUser(userId: Long) {
-        viewModelScope.launch {
-            getUserByIdUseCase(userId)
-                .collect { result ->
-                    _user.value = result
-                    Log.d("User", "getUser: ${result.data?.email}")
-                }
-        }
     }
 }
