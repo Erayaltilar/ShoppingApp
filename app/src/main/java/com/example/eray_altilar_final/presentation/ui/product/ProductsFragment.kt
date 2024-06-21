@@ -14,14 +14,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ProductsFragment : Fragment() {
 
-    private val viewModel: ProductsViewModel by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "Products"
+        (activity as? AppCompatActivity)?.supportActionBar?.title = "Categories"
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(
                 ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner)
