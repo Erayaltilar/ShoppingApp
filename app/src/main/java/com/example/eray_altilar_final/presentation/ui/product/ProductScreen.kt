@@ -84,6 +84,9 @@ fun ProductScreen(
         if (isSuccessAddToCart) {
             Toast.makeText(context, stringResource(R.string.toast_text_product_added_to_cart), Toast.LENGTH_LONG).show()
         }
+        if (isLiked) {
+            Toast.makeText(context, "Liked", Toast.LENGTH_LONG).show()
+        }
 
         ProductScreenUI(
             categories = categories,
@@ -100,6 +103,12 @@ fun ProductScreen(
                     it.thumbnail ?: "",
                 )
             },
+            addFavoriteClicked = {
+                viewModel.addProductInFavorites(productId = it.id ?: -1, userId = getUserId())
+                Log.d("ProductAddFavoriteClicked", "addFavoriteClicked: $it")
+                Log.d("UserIDAddFavoriteClicked", "addFavoriteClicked: ${getUserId()}")
+
+            },
         )
     }
 }
@@ -110,8 +119,9 @@ fun ProductScreenUI(
     onCategoryClick: (String) -> Unit,
     products: List<Product>,
     onAddToCartClicked: (Product) -> Unit,
+    addFavoriteClicked: (Product) -> Unit,
 ) {
-    LazyColumn {
+    LazyColumn( modifier = Modifier.padding(top = Dimen.spacing_xs)) {
         item {
             CategoryList(categories) {
                 onCategoryClick(it)
@@ -122,12 +132,13 @@ fun ProductScreenUI(
         columns = GridCells.Fixed(2),
         modifier = Modifier
             .fillMaxSize()
-            .padding(Dimen.spacing_xs, 120.dp, Dimen.spacing_xs, Dimen.spacing_xs),
+            .padding(Dimen.spacing_xs, 100.dp, Dimen.spacing_xs, Dimen.spacing_xs),
     ) {
         items(products.size) { productCount ->
             ProductItem(
                 product = products[productCount],
                 onAddToCart = onAddToCartClicked,
+                addFavoriteClicked = addFavoriteClicked,
             )
         }
     }
@@ -154,7 +165,7 @@ fun CategoryList(categories: List<Category>, onCategoryClick: (String) -> Unit) 
                         .background(
                             Brush.horizontalGradient(colors = listOf(Color.FF2196F3, Color.FF21CBF3)),
                         )
-                        .padding(16.dp),
+                        .padding(Dimen.spacing_xs),
                 ) {
                     Text(
                         text = category.name ?: "",
@@ -168,12 +179,11 @@ fun CategoryList(categories: List<Category>, onCategoryClick: (String) -> Unit) 
 }
 
 @Composable
-fun ProductItem(product: Product, onAddToCart: (Product) -> Unit) {
+fun ProductItem(product: Product, addFavoriteClicked: (Product) -> Unit, onAddToCart: (Product) -> Unit) {
 
     Card(
         shape = RoundedCornerShape(Dimen.spacing_s2),
-        modifier = Modifier
-            .padding(Dimen.spacing_xs),
+        modifier = Modifier.padding(Dimen.spacing_xs),
         elevation = CardDefaults.elevatedCardElevation(),
     ) {
         Box {
@@ -181,7 +191,7 @@ fun ProductItem(product: Product, onAddToCart: (Product) -> Unit) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(150.dp),
+                        .height(120.dp),
                 ) {
                     Image(
                         painter = rememberAsyncImagePainter(product.thumbnail),
@@ -191,7 +201,7 @@ fun ProductItem(product: Product, onAddToCart: (Product) -> Unit) {
                             .height(150.dp),
                     )
                     IconButton(
-                        onClick = { onAddToCart(product) },
+                        onClick = { addFavoriteClicked(product) },
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(Dimen.spacing_xs)

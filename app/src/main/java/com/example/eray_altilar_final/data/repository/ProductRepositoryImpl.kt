@@ -5,7 +5,6 @@ import com.example.eray_altilar_final.data.mapper.toCategory
 import com.example.eray_altilar_final.data.mapper.toProduct
 import com.example.eray_altilar_final.data.remote.ProductService
 import com.example.eray_altilar_final.domain.model.productmodel.Category
-import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.domain.model.productmodel.Products
 import com.example.eray_altilar_final.domain.repository.ProductRepository
 import kotlinx.coroutines.flow.Flow
