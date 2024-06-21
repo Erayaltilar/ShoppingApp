@@ -84,7 +84,7 @@ fun ProductScreen(
         if (isSuccessAddToCart) {
             Toast.makeText(context, stringResource(R.string.toast_text_product_added_to_cart), Toast.LENGTH_LONG).show()
         }
-        if (isLiked) {
+        if (isLikeSuccess) {
             Toast.makeText(context, "Liked", Toast.LENGTH_LONG).show()
         }
 
@@ -104,7 +104,13 @@ fun ProductScreen(
                 )
             },
             addFavoriteClicked = {
-                viewModel.addProductInFavorites(productId = it.id ?: -1, userId = getUserId())
+                viewModel.addProductInFavorites(
+                    getUserId(),
+                    it.id ?: 0,
+                    it.title ?: "",
+                    it.price ?: 0.0,
+                    it.thumbnail ?: "",
+                )
                 Log.d("ProductAddFavoriteClicked", "addFavoriteClicked: $it")
                 Log.d("UserIDAddFavoriteClicked", "addFavoriteClicked: ${getUserId()}")
 
@@ -121,7 +127,7 @@ fun ProductScreenUI(
     onAddToCartClicked: (Product) -> Unit,
     addFavoriteClicked: (Product) -> Unit,
 ) {
-    LazyColumn( modifier = Modifier.padding(top = Dimen.spacing_xs)) {
+    LazyColumn(modifier = Modifier.padding(top = Dimen.spacing_xs)) {
         item {
             CategoryList(categories) {
                 onCategoryClick(it)

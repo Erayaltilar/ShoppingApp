@@ -105,7 +105,7 @@ fun FavoriteItem(favorites: Favorites) {
                 }
                 Spacer(modifier = Modifier.height(Dimen.spacing_xs))
                 Text(
-                    text = favorites.name,
+                    text = favorites.name ?: "",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                 )

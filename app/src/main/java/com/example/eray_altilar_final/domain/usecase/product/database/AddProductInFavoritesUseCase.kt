@@ -9,7 +9,7 @@ import javax.inject.Inject
 class AddProductInFavoritesUseCase @Inject constructor(
     private val repository: DatabaseRepository,
 ) {
-    operator fun invoke(userId: Long, productId: Long): Flow<Resource<Favorites>> {
-        return repository.addProductToFavorites(userId, productId)
+    operator fun invoke(userId: Long, productId: Long, name: String, price: Double, thumbnail: String): Flow<Resource<Favorites>> {
+        return repository.addProductToFavorites(userId, productId, name, price, thumbnail)
     }
 }

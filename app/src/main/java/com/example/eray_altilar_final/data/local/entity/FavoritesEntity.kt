@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "favorites")
 data class FavoritesEntity(
     @PrimaryKey(autoGenerate = true) val favoritesId: Long = 0,
-    val productId: Long,
-    val name: String,
-    val thumbnail: String,
-    val price: Double,
-    val userId: Long
+    val productId: Long? = null,
+    val name: String? = null,
+    val thumbnail: String? = null,
+    val price: Double? = null,
+    val userId: Long? = null,
 )

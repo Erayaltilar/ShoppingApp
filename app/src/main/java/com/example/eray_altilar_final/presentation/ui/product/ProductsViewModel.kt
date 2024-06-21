@@ -164,23 +164,22 @@ class ProductsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun addProductInFavorites(userId: Long, productId: Long) {
-        addProductInFavoritesUseCase(userId, productId).onEach {
+    fun addProductInFavorites(userId: Long, productId: Long, name: String, price: Double, thumbnail: String) {
+        addProductInFavoritesUseCase(userId, productId, name, price, thumbnail).onEach {
             when (it) {
                 is Resource.Loading -> {}
 
                 is Resource.Success -> {
                     _uiState.update { state ->
                         state.copy(
-                            isSuccess = true,
-                            isLiked = true,
+                            isLikeSuccess = true,
                         )
                     }
-                    Log.d("TAG", "addProductInFavorites: ${it.data}")
+                    Log.d("Favorites", "addProductInFavorites: ${it.data}")
                 }
 
                 is Resource.Error -> {
-                    Log.d("TAG", "addProductInFavorites: ${it.errorMessage}")
+                    Log.d("ErrorProductViewModel", "addProductInFavorites: ${it.errorMessage}")
 
                 }
             }
@@ -190,7 +189,7 @@ class ProductsViewModel @Inject constructor(
     data class ProductScreenUIState(
         val loadingState: Boolean = false,
         val isHaveError: Boolean = false,
-        val isLiked: Boolean = false,
+        val isLikeSuccess: Boolean = false,
         val isSuccessAddToCart: Boolean = false,
         val isSuccess: Boolean = false,
         val isSuccessForGetProducts: Boolean = false,

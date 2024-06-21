@@ -12,6 +12,6 @@ interface DatabaseRepository {
     fun removeProductFromCart(cartId: Long): Flow<Resource<Unit>>
     fun getProductsInCart(): Flow<Resource<List<Cart>>>
     fun getProductsInFavorites(): Flow<Resource<List<Favorites>>>
-    fun addProductToFavorites(userId: Long, productId: Long): Flow<Resource<Favorites>>
+    fun addProductToFavorites(userId: Long, productId: Long, name: String, price: Double, thumbnail: String): Flow<Resource<Favorites>>
     fun removeProductFromFavorites(favoritesId: Long): Flow<Resource<Unit>>
 }

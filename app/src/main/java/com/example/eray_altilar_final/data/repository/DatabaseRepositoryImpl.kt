@@ -67,24 +67,18 @@ class DatabaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun addProductToFavorites(userId: Long, productId: Long): Flow<Resource<Favorites>> = flow {
-        try {
-            emit(Resource.Loading())
-            productService.getProductById(productId).products.map { product ->
-                val favoritesEntity = FavoritesEntity(
-                    userId = userId,
-                    productId = productId,
-                    name = product.title ?: "",
-                    price = product.price ?: 0.0,
-                    thumbnail = product.thumbnail ?: "",
-                )
+    override fun addProductToFavorites(userId: Long, productId: Long, name: String, price: Double, thumbnail: String): Flow<Resource<Favorites>> =
+        flow {
+            try {
+                emit(Resource.Loading())
+                val favoritesEntity = FavoritesEntity(userId = userId, productId = productId, name = name, price = price, thumbnail = thumbnail)
                 favoritesDao.insertFavoriteItem(favoritesEntity)
+                Log.d("TAG", "addProductToFavorites: $favoritesEntity")
                 emit(Resource.Success(favoritesEntity.toFavorites()))
+            } catch (e: Exception) {
+                emit(Resource.Error(e.localizedMessage.orEmpty()))
             }
-        } catch (e: Exception) {
-            emit(Resource.Error(e.localizedMessage.orEmpty()))
         }
-    }
 
     override fun removeProductFromFavorites(favoritesId: Long): Flow<Resource<Unit>> {
         TODO("Not yet implemented")
