@@ -13,8 +13,10 @@ import com.example.eray_altilar_final.core.SharedPreferencesManager
 import com.example.eray_altilar_final.databinding.ActivityMainBinding
 import com.example.eray_altilar_final.databinding.DrawerHeaderBinding
 import com.example.eray_altilar_final.presentation.ui.cart.CartFragment
+import com.example.eray_altilar_final.presentation.ui.favorites.FavoritesFragment
 import com.example.eray_altilar_final.presentation.ui.product.ProductsFragment
 import com.example.eray_altilar_final.presentation.ui.profile.ProfileFragment
+import com.example.eray_altilar_final.presentation.ui.search.SearchFragment
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,6 +45,18 @@ class MainActivity : AppCompatActivity() {
 
             R.id.cartFragment -> {
                 val fragment = CartFragment()
+                addFragment(fragment)
+                return@OnNavigationItemSelectedListener true
+            }
+
+            R.id.favoritesFragment -> {
+                val fragment = FavoritesFragment()
+                addFragment(fragment)
+                return@OnNavigationItemSelectedListener true
+            }
+
+            R.id.searchFragment -> {
+                val fragment = SearchFragment()
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }

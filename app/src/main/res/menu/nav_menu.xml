@@ -9,4 +9,10 @@
     <item
         android:id="@+id/cartFragment"
         android:title="Your Cart" />
+    <item
+        android:id="@+id/searchFragment"
+        android:title="Search Product" />
+    <item
+        android:id="@+id/favoritesFragment"
+        android:title="Your Favorites" />
 </menu>
