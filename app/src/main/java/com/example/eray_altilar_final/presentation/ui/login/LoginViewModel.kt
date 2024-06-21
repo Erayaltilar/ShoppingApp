@@ -79,7 +79,7 @@ class LoginViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getUserByToken(token: String) {
+    private fun getUserByToken(token: String) {
         getUserByTokenUseCase(token).onEach {
             when (it) {
                 is Resource.Loading -> {
