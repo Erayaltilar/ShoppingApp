@@ -34,7 +34,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseRepository(cartDao: CartDao, favoritesDao: FavoritesDao, productService: ProductService): DatabaseRepository {
-        return DatabaseRepositoryImpl(cartDao, favoritesDao, productService)
+    fun provideDatabaseRepository(cartDao: CartDao, favoritesDao: FavoritesDao): DatabaseRepository {
+        return DatabaseRepositoryImpl(cartDao, favoritesDao)
     }
 }

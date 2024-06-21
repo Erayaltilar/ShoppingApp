@@ -1,5 +1,6 @@
 package com.example.eray_altilar_final.presentation.ui.favorites
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
@@ -47,8 +48,12 @@ class FavoritesViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     _uiState.update { state ->
-                        state.copy(isHaveError = true, loadingState = false)
+                        state.copy(
+                            isHaveError = true,
+                            loadingState = false,
+                        )
                     }
+                    Log.d("Error",  it.errorMessage.toString())
                 }
             }
         }.launchIn(viewModelScope)

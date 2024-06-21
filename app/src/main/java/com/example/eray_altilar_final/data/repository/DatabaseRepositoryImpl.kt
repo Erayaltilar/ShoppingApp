@@ -21,7 +21,6 @@ import javax.inject.Inject
 class DatabaseRepositoryImpl @Inject constructor(
     private val cartDao: CartDao,
     private val favoritesDao: FavoritesDao,
-    private val productService: ProductService
 ) : DatabaseRepository {
     override fun addProductToCart(userId: Long, productId: Long, name: String, price: Double, thumbnail: String): Flow<Resource<Cart>> = flow {
         try {
@@ -56,8 +55,8 @@ class DatabaseRepositoryImpl @Inject constructor(
     override fun getProductsInFavorites(): Flow<Resource<List<Favorites>>> = flow {
         try {
             emit(Resource.Loading())
-            favoritesDao.getAllFavoriteItems().map {
-                val favoritesItems = it.map { favoritesEntity ->
+            favoritesDao.getAllFavoriteItems().collect { item ->
+                val favoritesItems = item.map { favoritesEntity ->
                     favoritesEntity.toFavorites()
                 }
                 emit(Resource.Success(favoritesItems))
