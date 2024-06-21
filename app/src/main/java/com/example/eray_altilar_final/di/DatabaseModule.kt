@@ -3,6 +3,7 @@ package com.example.eray_altilar_final.di
 import android.app.Application
 import androidx.room.Room
 import com.example.eray_altilar_final.data.local.dao.CartDao
+import com.example.eray_altilar_final.data.local.dao.FavoritesDao
 import com.example.eray_altilar_final.data.local.database.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -23,7 +24,12 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideCartDao(db: AppDatabase) : CartDao {
+    fun provideCartDao(db: AppDatabase): CartDao {
         return db.cartDao()
+    }
+
+    @Provides
+    fun provideFavoritesDao(db: AppDatabase): FavoritesDao {
+        return db.favoritesDao()
     }
 }

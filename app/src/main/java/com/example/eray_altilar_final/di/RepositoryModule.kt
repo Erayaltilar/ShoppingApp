@@ -1,6 +1,7 @@
 package com.example.eray_altilar_final.di
 
 import com.example.eray_altilar_final.data.local.dao.CartDao
+import com.example.eray_altilar_final.data.local.dao.FavoritesDao
 import com.example.eray_altilar_final.data.remote.ProductService
 import com.example.eray_altilar_final.data.remote.UserApi
 import com.example.eray_altilar_final.data.repository.DatabaseRepositoryImpl
@@ -33,7 +34,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseRepository(dao: CartDao): DatabaseRepository {
-        return DatabaseRepositoryImpl(dao)
+    fun provideDatabaseRepository(cartDao: CartDao, favoritesDao: FavoritesDao, productService: ProductService): DatabaseRepository {
+        return DatabaseRepositoryImpl(cartDao, favoritesDao, productService)
     }
 }
