@@ -10,7 +10,9 @@ import com.example.eray_altilar_final.domain.model.cartmodel.Cart
 import com.example.eray_altilar_final.domain.model.productmodel.Category
 import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.domain.model.productmodel.Products
+import com.example.eray_altilar_final.domain.usecase.product.database.AddProductInFavoritesUseCase
 import com.example.eray_altilar_final.domain.usecase.product.database.AddProductToCartUseCase
+import com.example.eray_altilar_final.domain.usecase.product.database.GetProductsInFavoritesUseCase
 import com.example.eray_altilar_final.domain.usecase.product.remote.GetCategoriesUseCase
 import com.example.eray_altilar_final.domain.usecase.product.remote.GetProductsByCategoryUseCase
 import com.example.eray_altilar_final.domain.usecase.product.remote.GetProductsUseCase
@@ -29,11 +31,12 @@ class ProductsViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
     private val addProductToCartUseCase: AddProductToCartUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
-    private val getProductsByCategoryUseCase: GetProductsByCategoryUseCase
+    private val getProductsByCategoryUseCase: GetProductsByCategoryUseCase,
+    private val addProductInFavoritesUseCase: AddProductInFavoritesUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(SearchScreenUIState())
-    val uiState: StateFlow<SearchScreenUIState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ProductScreenUIState())
+    val uiState: StateFlow<ProductScreenUIState> = _uiState.asStateFlow()
 
     private var currentPage = 0
     private val pageSize = 30
@@ -161,10 +164,33 @@ class ProductsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    data class SearchScreenUIState(
+    fun addProductInFavorites(userId: Long, productId: Long) {
+        addProductInFavoritesUseCase(userId, productId).onEach {
+            when (it) {
+                is Resource.Loading -> {}
+
+                is Resource.Success -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            isSuccess = true,
+                            isLiked = true,
+                        )
+                    }
+                    Log.d("TAG", "addProductInFavorites: ${it.data}")
+                }
+
+                is Resource.Error -> {
+                    Log.d("TAG", "addProductInFavorites: ${it.errorMessage}")
+
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    data class ProductScreenUIState(
         val loadingState: Boolean = false,
         val isHaveError: Boolean = false,
-        val isLiked: Boolean = true,
+        val isLiked: Boolean = false,
         val isSuccessAddToCart: Boolean = false,
         val isSuccess: Boolean = false,
         val isSuccessForGetProducts: Boolean = false,
