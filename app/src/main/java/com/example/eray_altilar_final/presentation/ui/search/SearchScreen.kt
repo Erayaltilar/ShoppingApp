@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.presentation.theme.Dimen
+import com.example.eray_altilar_final.presentation.ui.product.ProductItem
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
@@ -46,13 +47,17 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 
         SearchScreenUI(
             products = products,
+            searchProduct = {
+                viewModel.searchProduct(it)
+            }
         )
     }
 }
 
 @Composable
 fun SearchScreenUI(
-    products: List<Product>
+    products: List<Product>,
+    searchProduct: (String) -> Unit
 ) {
     var query by remember { mutableStateOf("") }
     val filteredProducts = products.filter {
@@ -62,19 +67,20 @@ fun SearchScreenUI(
     Column {
         OutlinedTextField(
             value = query,
-            onValueChange = { query = it },
+            onValueChange = {
+                query = it
+                searchProduct(it)
+            },
             label = { Text("Search") },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Dimen.spacing_m1)
+                .padding(Dimen.spacing_m1, top = Dimen.spacing_l)
         )
         LazyColumn {
             items(filteredProducts.size) { productIndex ->
-                Text(
-                    text = filteredProducts[productIndex].title ?: "",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(Dimen.spacing_xs)
+                val product = filteredProducts[productIndex]
+                ProductItem(
+                    product = product,
                 )
             }
         }

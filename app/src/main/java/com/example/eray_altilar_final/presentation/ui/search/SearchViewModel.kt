@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
 import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.domain.usecase.product.remote.GetProductsUseCase
+import com.example.eray_altilar_final.domain.usecase.product.remote.SearchProductUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     val getProductsUseCase: GetProductsUseCase,
+    val searchProductUseCase: SearchProductUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchScreenUIState())
@@ -26,7 +28,7 @@ class SearchViewModel @Inject constructor(
     private val pageSize = 30
 
     init {
-        getProducts()
+         searchProduct( "")
     }
 
     private fun getProducts() {
@@ -49,7 +51,7 @@ class SearchViewModel @Inject constructor(
                             isHaveError = false,
                             isSuccess = true,
                             errorMessage = "",
-                            products = it.data?.products ?: emptyList()
+                            products = it.data?.products ?: emptyList(),
                         )
                     }
                 }
@@ -67,11 +69,39 @@ class SearchViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    fun searchProduct(query: String) {
+        searchProductUseCase(query).onEach {
+            when (it) {
+                is Resource.Loading -> {}
+
+                is Resource.Success -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            loadingState = false,
+                            isHaveError = false,
+                            isSuccess = true,
+                            products = it.data?.products ?: emptyList(),
+                        )
+                    }
+                }
+
+                is Resource.Error -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            loadingState = false,
+                            isHaveError = true,
+                        )
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
     data class SearchScreenUIState(
         val loadingState: Boolean = false,
         val isHaveError: Boolean = false,
         val isSuccess: Boolean = false,
         val errorMessage: String = "",
-        val products: List<Product> = emptyList()
+        val products: List<Product> = emptyList(),
     )
 }
