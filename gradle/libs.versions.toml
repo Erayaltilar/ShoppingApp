@@ -3,6 +3,7 @@ agp = "8.4.0"
 coilCompose = "2.6.0"
 compilerVersion = "1.1.1"
 converterGson = "2.11.0"
+coreSplashscreen = "1.0.1"
 glide = "4.16.0"
 hiltAndroid = "2.51.1"
 hiltNavigationFragment = "1.2.0"
@@ -29,9 +30,12 @@ constraintlayout = "2.1.4"
 roomKtx = "2.6.1"
 runtimeLivedata = "1.6.7"
 runtimeLivedataVersion = "1.6.8"
+googleGmsGoogleServices = "4.4.2"
+firebaseConfig = "22.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationFragment" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
@@ -69,8 +73,10 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 room-compiler = { module = "android.arch.persistence.room:compiler", version.ref = "compilerVersion" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedataVersion" }
+firebase-config = { group = "com.google.firebase", name = "firebase-config", version.ref = "firebaseConfig" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
