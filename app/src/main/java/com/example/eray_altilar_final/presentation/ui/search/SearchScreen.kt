@@ -19,7 +19,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.presentation.theme.Dimen
@@ -74,7 +73,7 @@ fun SearchScreenUI(
             label = { Text("Search") },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Dimen.spacing_m1, top = Dimen.spacing_l)
+                .padding(Dimen.spacing_m1, top = Dimen.spacing_l),
         )
         LazyColumn {
             items(filteredProducts.size) { productIndex ->

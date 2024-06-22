@@ -34,29 +34,7 @@ class SplashActivity : ComponentActivity() {
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            this@SplashActivity.goToTheActivity(activityToGo = LoginActivity(), isFinish = true)
+            this.goToTheActivity(activityToGo = LoginActivity(), isFinish = true)
         }, 3000)
-    }
-}
-
-@Composable
-fun SplashScreen() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = "App Logo",
-            modifier = Modifier.size(128.dp),
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SplashScreenPreview() {
-    ErayAltilarFinalTheme {
-        SplashScreen()
     }
 }
