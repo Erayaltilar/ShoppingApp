@@ -1,6 +1,5 @@
 package com.example.eray_altilar_final.presentation.ui.product
 
-import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -33,8 +32,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -47,7 +44,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.eray_altilar_final.R
 import com.example.eray_altilar_final.core.SharedPreferencesManager.getUserId
-import com.example.eray_altilar_final.domain.model.cartmodel.Cart
 import com.example.eray_altilar_final.domain.model.productmodel.Category
 import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.presentation.theme.Dimen
@@ -73,14 +69,6 @@ fun ProductScreen(
             Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
-        if (isSuccessForCategory) {
-            /* sonar - comment */
-        }
-
-        if (isSuccessForGetProducts) {
-            /* sonar - comment */
-        }
-
         if (isSuccessAddToCart) {
             Toast.makeText(context, stringResource(R.string.toast_text_product_added_to_cart), Toast.LENGTH_LONG).show()
         }
@@ -94,6 +82,7 @@ fun ProductScreen(
                 viewModel.loadProductsByCategory(it)
             },
             products = products,
+
             onAddToCartClicked = {
                 viewModel.addProductToCart(
                     getUserId(),
@@ -101,6 +90,11 @@ fun ProductScreen(
                     it.title ?: "",
                     it.price ?: 0.0,
                     it.thumbnail ?: "",
+                )
+            },
+            onAddToCartClickedForApi = {
+                viewModel.addProductToCartApi(
+                    it.id ?: 0,
                 )
             },
             addFavoriteClicked = {
@@ -125,6 +119,7 @@ fun ProductScreenUI(
     onCategoryClick: (String) -> Unit,
     products: List<Product>,
     onAddToCartClicked: (Product) -> Unit = {},
+    onAddToCartClickedForApi: (Product) -> Unit = {},
     addFavoriteClicked: (Product) -> Unit = {},
 ) {
     LazyColumn(modifier = Modifier.padding(top = Dimen.spacing_xs)) {
@@ -143,7 +138,7 @@ fun ProductScreenUI(
         items(products.size) { productCount ->
             ProductItem(
                 product = products[productCount],
-                onAddToCart = onAddToCartClicked,
+                onAddToCart = onAddToCartClicked, // TODO: onAddToCartClickedForApi() Api çalışma durumunda çağırılacak fonksyion
                 addFavoriteClicked = addFavoriteClicked,
             )
         }

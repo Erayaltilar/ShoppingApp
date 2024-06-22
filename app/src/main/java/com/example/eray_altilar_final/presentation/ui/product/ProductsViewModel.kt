@@ -13,6 +13,7 @@ import com.example.eray_altilar_final.domain.model.productmodel.Products
 import com.example.eray_altilar_final.domain.usecase.product.database.AddProductInFavoritesUseCase
 import com.example.eray_altilar_final.domain.usecase.product.database.AddProductToCartUseCase
 import com.example.eray_altilar_final.domain.usecase.product.database.GetProductsInFavoritesUseCase
+import com.example.eray_altilar_final.domain.usecase.product.remote.AddProductToCartFromApi
 import com.example.eray_altilar_final.domain.usecase.product.remote.GetCategoriesUseCase
 import com.example.eray_altilar_final.domain.usecase.product.remote.GetProductsByCategoryUseCase
 import com.example.eray_altilar_final.domain.usecase.product.remote.GetProductsUseCase
@@ -33,6 +34,7 @@ class ProductsViewModel @Inject constructor(
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val getProductsByCategoryUseCase: GetProductsByCategoryUseCase,
     private val addProductInFavoritesUseCase: AddProductInFavoritesUseCase,
+    private val addProductToCartFromApi: AddProductToCartFromApi,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProductScreenUIState())
@@ -164,6 +166,26 @@ class ProductsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    // dummyjson api'si değişmeyeceğinden işe yaramıyor bunun için üstteki room'u kullanıyoruz
+    fun addProductToCartApi(productId: Long) {
+        addProductToCartFromApi(productId = productId).onEach {
+            when (it) {
+                is Resource.Loading -> {}
+                is Resource.Success -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            isSuccessAddToCart = true,
+                        )
+                    }
+                }
+
+                is Resource.Error -> {
+                    Log.d("TAG", "addProductToCart: ${it.errorMessage}")
+                }
+            }
+        }
+    }
+
     fun addProductInFavorites(userId: Long, productId: Long, name: String, price: Double, thumbnail: String) {
         addProductInFavoritesUseCase(userId, productId, name, price, thumbnail).onEach {
             when (it) {
@@ -197,6 +219,6 @@ class ProductsViewModel @Inject constructor(
         val errorMessage: String = "",
         val products: List<Product> = emptyList(),
         val categories: List<Category> = emptyList(),
-        val selectedCategory: String = ""
+        val selectedCategory: String = "",
     )
 }
