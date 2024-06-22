@@ -5,6 +5,7 @@ import com.example.eray_altilar_final.data.mapper.toCategory
 import com.example.eray_altilar_final.data.mapper.toProduct
 import com.example.eray_altilar_final.data.remote.ProductService
 import com.example.eray_altilar_final.domain.model.productmodel.Category
+import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.domain.model.productmodel.Products
 import com.example.eray_altilar_final.domain.repository.ProductRepository
 import kotlinx.coroutines.flow.Flow
@@ -32,5 +33,11 @@ class ProductRepositoryImpl @Inject constructor(
         emit(Resource.Loading())
         val categories = productService.getCategories().map { it.toCategory() }
         emit(Resource.Success(data = categories))
+    }
+
+    override fun searchProduct(query: String): Flow<Resource<Products>> = flow {
+        emit(Resource.Loading())
+        val products = productService.searchProducts(query).toProduct()
+        emit(Resource.Success(data = products))
     }
 }

@@ -25,4 +25,7 @@ interface ProductService {
         @Query("limit") limit: Int,
         @Query("skip") skip: Int
     ): ProductResult
+
+    @GET("products/search")
+    suspend fun searchProducts(@Query("q") query: String): ProductResult
 }

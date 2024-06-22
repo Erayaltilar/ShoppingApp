@@ -124,8 +124,8 @@ fun ProductScreenUI(
     categories: List<Category>,
     onCategoryClick: (String) -> Unit,
     products: List<Product>,
-    onAddToCartClicked: (Product) -> Unit,
-    addFavoriteClicked: (Product) -> Unit,
+    onAddToCartClicked: (Product) -> Unit = {},
+    addFavoriteClicked: (Product) -> Unit = {},
 ) {
     LazyColumn(modifier = Modifier.padding(top = Dimen.spacing_xs)) {
         item {
@@ -185,7 +185,7 @@ fun CategoryList(categories: List<Category>, onCategoryClick: (String) -> Unit) 
 }
 
 @Composable
-fun ProductItem(product: Product, addFavoriteClicked: (Product) -> Unit, onAddToCart: (Product) -> Unit) {
+fun ProductItem(product: Product, addFavoriteClicked: (Product) -> Unit = {}, onAddToCart: (Product) -> Unit = {}) {
 
     Card(
         shape = RoundedCornerShape(Dimen.spacing_s2),
