@@ -22,7 +22,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    val getUsersUseCase: GetUsersUseCase,
     val loginUseCase: LoginUseCase,
     val getUserByTokenUseCase: GetUserByTokenUseCase,
 ) : ViewModel() {
@@ -30,27 +29,10 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginScreenUIState())
     val uiState: StateFlow<LoginScreenUIState> = _uiState.asStateFlow()
 
-
-    init {
-        //getUsers()
-    }
-
-//    private fun getUsers() {
-//            getUsersUseCase()
-//                .collect { result ->
-//                    _users.value = result
-//                }
-//    }
-
-
     fun getToken(username: String, password: String) {
         loginUseCase(LoginRequest(username, password)).onEach {
             when (it) {
-                is Resource.Loading -> {
-                    _uiState.update { state ->
-                        state.copy(loadingState = true)
-                    }
-                }
+                is Resource.Loading -> {}
 
                 is Resource.Success -> {
                     _uiState.update { state ->
@@ -110,20 +92,6 @@ class LoginViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    //    fun validateCredentials(username: String, password: String) {
-//        viewModelScope.launch {
-//            when (val result = _users.value) {
-//                is Resource.Success -> {
-//                    val isValid = result.data?.users?.any { it.username == username && it.password == password } == true
-//                    _loginResult.value = Resource.Success(isValid)
-//                }
-//
-//                else -> {
-//                    _loginResult.value = Resource.Error("Validation failed")
-//                }
-//            }
-//        }
-//    }
     data class LoginScreenUIState(
         val loadingState: Boolean = false,
         val isHaveError: Boolean = false,
