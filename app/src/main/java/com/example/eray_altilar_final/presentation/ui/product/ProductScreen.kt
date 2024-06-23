@@ -72,6 +72,7 @@ fun ProductScreen(
         if (isSuccessAddToCart) {
             Toast.makeText(context, stringResource(R.string.toast_text_product_added_to_cart), Toast.LENGTH_LONG).show()
         }
+
         if (isLikeSuccess) {
             Toast.makeText(context, "Liked", Toast.LENGTH_LONG).show()
         }

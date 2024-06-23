@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
@@ -52,14 +51,13 @@ fun FavoritesScreen(viewModel: FavoritesViewModel = hiltViewModel()) {
         if (isHaveError) {
             Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
-
         FavoritesScreenUI(favorites)
     }
 }
 
 @Composable
 fun FavoritesScreenUI(favorites: List<Favorites>) {
-    LazyColumn {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(favorites.size) { index ->
             FavoriteItem(favorites.map { it.copy() }[index])
         }
@@ -104,10 +102,4 @@ fun FavoriteItem(favorites: Favorites) {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun FavoriteItemPreview() {
-    FavoritesScreen()
 }

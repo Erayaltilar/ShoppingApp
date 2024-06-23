@@ -175,6 +175,7 @@ class ProductsViewModel @Inject constructor(
                     _uiState.update { state ->
                         state.copy(
                             isSuccessAddToCart = true,
+                            product = it.data,
                         )
                     }
                 }
@@ -183,7 +184,7 @@ class ProductsViewModel @Inject constructor(
                     Log.d("TAG", "addProductToCart: ${it.errorMessage}")
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     fun addProductInFavorites(userId: Long, productId: Long, name: String, price: Double, thumbnail: String) {
@@ -197,7 +198,6 @@ class ProductsViewModel @Inject constructor(
                             isLikeSuccess = true,
                         )
                     }
-                    Log.d("Favorites", "addProductInFavorites: ${it.data}")
                 }
 
                 is Resource.Error -> {
@@ -218,6 +218,7 @@ class ProductsViewModel @Inject constructor(
         val isSuccessForCategory: Boolean = false,
         val errorMessage: String = "",
         val products: List<Product> = emptyList(),
+        val product: Product? = null,
         val categories: List<Category> = emptyList(),
         val selectedCategory: String = "",
     )

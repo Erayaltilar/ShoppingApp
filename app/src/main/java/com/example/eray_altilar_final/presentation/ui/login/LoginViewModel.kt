@@ -101,6 +101,6 @@ class LoginViewModel @Inject constructor(
         val tokenGet: Boolean = false,
         val loggedUser: User? = null,
         val isLoginSuccess: Boolean = false,
-        val users: List<User> = emptyList()
+        val users: List<User> = emptyList(),
     )
 }
