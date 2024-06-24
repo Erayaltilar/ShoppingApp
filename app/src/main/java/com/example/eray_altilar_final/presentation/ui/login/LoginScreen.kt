@@ -1,6 +1,5 @@
 package com.example.eray_altilar_final.presentation.ui.login
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,13 +18,12 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,26 +32,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.eray_altilar_final.R
-import com.example.eray_altilar_final.core.Resource
-import com.example.eray_altilar_final.core.SharedPreferencesManager.getToken
 import com.example.eray_altilar_final.presentation.theme.Dimen
-import com.example.eray_altilar_final.presentation.theme.ErayAltilarFinalTheme
 import com.example.eray_altilar_final.presentation.theme.FF21CBF3
-import kotlin.math.log
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
-    navigate: () -> Unit = { /* sonar comment */ },
+    navigate: () -> Unit = { /* sonar - comment */ },
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
@@ -70,13 +62,19 @@ fun LoginScreen(
 
         if (isHaveError) {
             Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+            return@with
         }
 
         if (isLoginSuccess) {
             navigate()
         }
 
+        if (isFetchSuccessful) {
+            viewModel.getRemoteConfig("backgroundColor")
+        }
+
         LoginScreenUI(
+            backgroundColor = backgroundColor,
             onLoginButtonClicked = {
                 viewModel.getToken("michaelw", "michaelwpass")
             },
@@ -86,6 +84,7 @@ fun LoginScreen(
 
 @Composable
 fun LoginScreenUI(
+    backgroundColor: String,
     onLoginButtonClicked: () -> Unit,
 ) {
     var username by remember { mutableStateOf("") }
@@ -94,7 +93,7 @@ fun LoginScreenUI(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.FF21CBF3),
+            .background(Color(android.graphics.Color.parseColor(backgroundColor)))
     ) {
         Column(
             modifier = Modifier

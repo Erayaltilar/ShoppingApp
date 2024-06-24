@@ -3,6 +3,9 @@ package com.example.eray_altilar_final.di
 import com.example.eray_altilar_final.core.AppConsts.BASE_URL
 import com.example.eray_altilar_final.data.remote.ProductService
 import com.example.eray_altilar_final.data.remote.UserApi
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +28,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideProductService(retrofit: Retrofit) : ProductService {
+    fun provideProductService(retrofit: Retrofit): ProductService {
         return retrofit.create(ProductService::class.java)
     }
 
@@ -44,7 +47,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGsonConverterFactory() : GsonConverterFactory {
+    fun provideGsonConverterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create()
     }
 
@@ -55,5 +58,11 @@ object NetworkModule {
             .readTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15, TimeUnit.SECONDS)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
+        return Firebase.remoteConfig
     }
 }
