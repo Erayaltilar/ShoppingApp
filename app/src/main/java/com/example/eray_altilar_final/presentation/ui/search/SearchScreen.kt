@@ -75,6 +75,7 @@ fun SearchScreenUI(
                 .fillMaxWidth()
                 .padding(Dimen.spacing_m1, top = Dimen.spacing_l),
         )
+
         LazyColumn {
             items(filteredProducts.size) { productIndex ->
                 val product = filteredProducts[productIndex]

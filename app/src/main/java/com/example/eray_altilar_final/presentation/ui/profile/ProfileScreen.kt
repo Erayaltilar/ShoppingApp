@@ -105,15 +105,20 @@ fun ProfileScreenUI(
                         .size(120.dp)
                         .clip(CircleShape),
                 )
+
                 Spacer(modifier = Modifier.height(Dimen.spacing_m1))
+
                 Text(
                     text = user?.username ?: "",
                     fontWeight = FontWeight.Bold,
                     fontSize = Dimen.font_size_l,
                     modifier = Modifier.padding(Dimen.spacing_xs),
                 )
+
                 Text(text = user?.email ?: "", fontSize = Dimen.font_size_18, modifier = Modifier.padding(Dimen.spacing_xxs))
+
                 Text(text = user?.firstName ?: "", fontSize = Dimen.font_size_18, modifier = Modifier.padding(Dimen.spacing_xxs))
+
                 Text(text = user?.lastName ?: "", fontSize = Dimen.font_size_18, modifier = Modifier.padding(Dimen.spacing_xxs))
 
                 Spacer(modifier = Modifier.height(Dimen.spacing_m1))
