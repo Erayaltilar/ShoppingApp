@@ -57,7 +57,7 @@ fun FavoritesScreen(viewModel: FavoritesViewModel = hiltViewModel()) {
 
 @Composable
 fun FavoritesScreenUI(favorites: List<Favorites>) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(modifier = Modifier.fillMaxSize().padding(top = Dimen.spacing_l2)) {
         items(favorites.size) { index ->
             FavoriteItem(favorites.map { it.copy() }[index])
         }
@@ -71,7 +71,6 @@ fun FavoriteItem(favorites: Favorites) {
         modifier = Modifier.padding(Dimen.spacing_xs),
         elevation = CardDefaults.elevatedCardElevation(),
     ) {
-        Box {
             Column(modifier = Modifier.padding(Dimen.spacing_m1)) {
                 Box(
                     modifier = Modifier
@@ -86,20 +85,24 @@ fun FavoriteItem(favorites: Favorites) {
                             .height(150.dp),
                     )
                 }
+
                 Spacer(modifier = Modifier.height(Dimen.spacing_xs))
+
                 Text(
                     text = favorites.name ?: "",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                 )
+
                 Spacer(modifier = Modifier.height(Dimen.spacing_xxs))
+
                 Text(
                     text = "${favorites.price} USD",
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.Gray,
                 )
+
                 Spacer(modifier = Modifier.height(Dimen.spacing_xs))
             }
         }
     }
-}

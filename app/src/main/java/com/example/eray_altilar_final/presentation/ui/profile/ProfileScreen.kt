@@ -58,11 +58,10 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
                 Text(text = stringResource(R.string.user_error))
             }
         }
-
         ProfileScreenUI(
             user = user,
             updateUserOnClick = { viewModel.updateUser(user?.id ?: 0, userUpdateRequest) },
-            )
+        )
 
     }
 }
@@ -75,6 +74,7 @@ fun ProfileScreenUI(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .padding(top = Dimen.spacing_l2)
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
@@ -82,75 +82,68 @@ fun ProfileScreenUI(
                         Color.FF21CBF3,
                     ),
                 ),
-            )
-            .padding(Dimen.spacing_m1),
+            ),
+        contentAlignment = Alignment.Center,
     ) {
-        Column(
+        Card(
+            shape = RoundedCornerShape(Dimen.spacing_m1),
+            elevation = CardDefaults.elevatedCardElevation(Dimen.spacing_xxs),
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(Dimen.spacing_s2),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(Dimen.spacing_m1),
         ) {
-            Card(
-                shape = RoundedCornerShape(Dimen.spacing_m1),
-                elevation = CardDefaults.elevatedCardElevation(Dimen.spacing_xxs),
+            Column(
                 modifier = Modifier
+                    .background(Color.White)
                     .fillMaxWidth()
-                    .padding(Dimen.spacing_m1),
+                    .padding(Dimen.spacing_l),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Column(
+                Image(
+                    painter = rememberAsyncImagePainter(user?.image ?: ""),
+                    contentDescription = stringResource(R.string.profil_resmi),
                     modifier = Modifier
-                        .background(Color.White)
-                        .padding(Dimen.spacing_l),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                        .size(120.dp)
+                        .clip(CircleShape),
+                )
+                Spacer(modifier = Modifier.height(Dimen.spacing_m1))
+                Text(
+                    text = user?.username ?: "",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = Dimen.font_size_l,
+                    modifier = Modifier.padding(Dimen.spacing_xs),
+                )
+                Text(text = user?.email ?: "", fontSize = Dimen.font_size_18, modifier = Modifier.padding(Dimen.spacing_xxs))
+                Text(text = user?.firstName ?: "", fontSize = Dimen.font_size_18, modifier = Modifier.padding(Dimen.spacing_xxs))
+                Text(text = user?.lastName ?: "", fontSize = Dimen.font_size_18, modifier = Modifier.padding(Dimen.spacing_xxs))
+
+                Spacer(modifier = Modifier.height(Dimen.spacing_m1))
+
+                Button(
+                    onClick = updateUserOnClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.FFF44336,
+                        contentColor = Color.White,
+                    ),
+                    contentPadding = PaddingValues(),
                 ) {
-                    Image(
-                        painter = rememberAsyncImagePainter(user?.image ?: ""),
-                        contentDescription = stringResource(R.string.profil_resmi),
+                    Box(
                         modifier = Modifier
-                            .size(120.dp)
-                            .clip(CircleShape),
-                    )
-                    Spacer(modifier = Modifier.height(Dimen.spacing_m1))
-                    Text(
-                        text = user?.username ?: "",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = Dimen.font_size_l,
-                        modifier = Modifier.padding(Dimen.spacing_xs),
-                    )
-                    Text(text = user?.email ?: "", fontSize = Dimen.font_size_18, modifier = Modifier.padding(Dimen.spacing_xxs))
-                    Text(text = user?.firstName ?: "", fontSize = Dimen.font_size_18, modifier = Modifier.padding(Dimen.spacing_xxs))
-                    Text(text = user?.lastName ?: "", fontSize = Dimen.font_size_18, modifier = Modifier.padding(Dimen.spacing_xxs))
-
-                    Spacer(modifier = Modifier.height(Dimen.spacing_m1))
-
-                    Button(
-                        onClick = updateUserOnClick,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.FFF44336,
-                            contentColor = Color.White,
-                        ),
-                        contentPadding = PaddingValues(),
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .background(
-                                    brush = Brush.horizontalGradient(
-                                        colors = listOf(
-                                            Color.FF2196F3,
-                                            Color.FF21CBF3,
-                                        )
-                                    ),
-                                    shape = RoundedCornerShape(50)
-                                )
-                                .padding(horizontal = Dimen.spacing_m1, vertical = Dimen.spacing_xs),
-                        ) {
-                            Text(
-                                text = stringResource(R.string.profili_guncelle),
-                                color = Color.White,
-                                fontSize = 18.sp,
+                            .background(
+                                brush = Brush.horizontalGradient(
+                                    colors = listOf(
+                                        Color.FF2196F3,
+                                        Color.FF21CBF3,
+                                    )
+                                ),
+                                shape = RoundedCornerShape(50)
                             )
-                        }
+                            .padding(horizontal = Dimen.spacing_m1, vertical = Dimen.spacing_xs),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.profili_guncelle),
+                            color = Color.White,
+                            fontSize = Dimen.font_size_18,
+                        )
                     }
                 }
             }

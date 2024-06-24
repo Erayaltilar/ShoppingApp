@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.ui.AppBarConfiguration
 import com.example.eray_altilar_final.R
 import com.example.eray_altilar_final.core.SharedPreferencesManager
 import com.example.eray_altilar_final.databinding.ActivityMainBinding

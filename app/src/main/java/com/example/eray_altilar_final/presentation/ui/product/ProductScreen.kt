@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +19,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -123,25 +126,27 @@ fun ProductScreenUI(
     onAddToCartClickedForApi: (Product) -> Unit = {},
     addFavoriteClicked: (Product) -> Unit = {},
 ) {
-    LazyColumn(modifier = Modifier.padding(top = Dimen.spacing_xs)) {
-        item {
-            CategoryList(categories) {
-                onCategoryClick(it)
+    Column(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier.padding(top = Dimen.spacing_xs)) {
+            item {
+                CategoryList(categories) {
+                    onCategoryClick(it)
+                }
             }
         }
-    }
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(Dimen.spacing_xs, 100.dp, Dimen.spacing_xs, Dimen.spacing_xs),
-    ) {
-        items(products.size) { productCount ->
-            ProductItem(
-                product = products[productCount],
-                onAddToCart = onAddToCartClicked, // TODO: onAddToCartClickedForApi() Api çalışma durumunda çağırılacak fonksyion
-                addFavoriteClicked = addFavoriteClicked,
-            )
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(2),
+            verticalItemSpacing = Dimen.spacing_xxs,
+            horizontalArrangement = Arrangement.spacedBy(Dimen.spacing_xxs),
+            modifier = Modifier.padding(Dimen.spacing_m1),
+        ) {
+            items(products.size) { productCount ->
+                ProductItem(
+                    product = products[productCount],
+                    onAddToCart = onAddToCartClicked, // TODO: onAddToCartClickedForApi() Api çalışma durumunda çağırılacak fonksyion
+                    addFavoriteClicked = addFavoriteClicked,
+                )
+            }
         }
     }
 }
@@ -182,78 +187,79 @@ fun CategoryList(categories: List<Category>, onCategoryClick: (String) -> Unit) 
 
 @Composable
 fun ProductItem(product: Product, addFavoriteClicked: (Product) -> Unit = {}, onAddToCart: (Product) -> Unit = {}) {
-
     Card(
         shape = RoundedCornerShape(Dimen.spacing_s2),
         modifier = Modifier.padding(Dimen.spacing_xs),
         elevation = CardDefaults.elevatedCardElevation(),
     ) {
-        Box {
-            Column(modifier = Modifier.padding(Dimen.spacing_m1)) {
-                Box(
+        Column(modifier = Modifier.padding(Dimen.spacing_m1)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+            ) {
+                Image(
+                    painter = rememberAsyncImagePainter(product.thumbnail),
+                    contentDescription = stringResource(R.string.content_description_product_image),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(120.dp),
+                        .height(150.dp),
+                )
+
+                IconButton(
+                    onClick = { addFavoriteClicked(product) },
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(Dimen.spacing_xs)
+                        .background(Color.White, shape = RoundedCornerShape(50)),
                 ) {
-                    Image(
-                        painter = rememberAsyncImagePainter(product.thumbnail),
-                        contentDescription = stringResource(R.string.content_description_product_image),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(150.dp),
+                    Icon(
+                        painter = rememberAsyncImagePainter(R.drawable.ic_heart),
+                        contentDescription = stringResource(R.string.contentDescriptionFavorite),
+                        tint = Color.Red,
                     )
-                    IconButton(
-                        onClick = { addFavoriteClicked(product) },
+                }
+            }
+
+            Spacer(modifier = Modifier.height(Dimen.spacing_xs))
+
+            Text(
+                text = product.title ?: "",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+            )
+
+            Spacer(modifier = Modifier.height(Dimen.spacing_xxs))
+
+            Text(
+                text = "${product.price} USD",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Gray,
+            )
+
+            Spacer(modifier = Modifier.height(Dimen.spacing_xs))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Spacer(modifier = Modifier.weight(1f))
+
+                Button(
+                    onClick = { onAddToCart(product) },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                    contentPadding = PaddingValues(),
+                ) {
+                    Box(
                         modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(Dimen.spacing_xs)
-                            .background(Color.White, shape = RoundedCornerShape(50)),
+                            .background(
+                                brush = Brush.horizontalGradient(colors = listOf(Color.FF2196F3, Color.FF21CBF3)),
+                                shape = RoundedCornerShape(50),
+                            )
+                            .padding(horizontal = Dimen.spacing_m1, vertical = Dimen.spacing_xs),
                     ) {
                         Icon(
-                            painter = rememberAsyncImagePainter(R.drawable.ic_heart),
-                            contentDescription = stringResource(R.string.contentDescriptionFavorite),
-                            tint = Color.Red,
+                            painter = rememberAsyncImagePainter(R.drawable.ic_shopping_cart),
+                            contentDescription = stringResource(R.string.add_to_cart),
+                            tint = Color.White,
                         )
-                    }
-                }
-                Spacer(modifier = Modifier.height(Dimen.spacing_xs))
-                Text(
-                    text = product.title ?: "",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.height(Dimen.spacing_xxs))
-                Text(
-                    text = "${product.price} USD",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Gray,
-                )
-                Spacer(modifier = Modifier.height(Dimen.spacing_xs))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Spacer(modifier = Modifier.weight(1f))
-                    Button(
-                        onClick = { onAddToCart(product) },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent,
-                        ),
-                        contentPadding = PaddingValues(),
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .background(
-                                    brush = Brush.horizontalGradient(
-                                        colors = listOf(Color.FF2196F3, Color.FF21CBF3),
-                                    ),
-                                    shape = RoundedCornerShape(50),
-                                )
-                                .padding(horizontal = Dimen.spacing_m1, vertical = Dimen.spacing_xs),
-                        ) {
-                            Icon(
-                                painter = rememberAsyncImagePainter(R.drawable.ic_shopping_cart),
-                                contentDescription = stringResource(R.string.add_to_cart),
-                                tint = Color.White,
-                            )
-                        }
                     }
                 }
             }

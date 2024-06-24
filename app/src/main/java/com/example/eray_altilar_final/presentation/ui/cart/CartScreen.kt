@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.eray_altilar_final.core.Resource
+import com.example.eray_altilar_final.presentation.theme.Dimen
 
 
 @Composable
@@ -28,7 +29,7 @@ fun CartScreen(viewModel :  CartViewModel = hiltViewModel()) {
 
     LazyColumn(modifier = Modifier
         .fillMaxSize()
-        .padding(16.dp)) {
+        .padding(Dimen.spacing_l2)) {
         when (val result = cartState) {
             is Resource.Loading -> {
                 item {

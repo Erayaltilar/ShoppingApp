@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import com.example.eray_altilar_final.core.SharedPreferencesManager
 import com.example.eray_altilar_final.presentation.ui.main.MainActivity
+import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,6 +18,7 @@ class LoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         SharedPreferencesManager.init(this)
+        FirebaseApp.initializeApp(this)
         setContent {
             LoginScreen {
                 val intent = Intent(this, MainActivity::class.java)
