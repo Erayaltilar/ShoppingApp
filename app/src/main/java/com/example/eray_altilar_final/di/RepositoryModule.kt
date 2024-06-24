@@ -5,10 +5,12 @@ import com.example.eray_altilar_final.data.local.dao.FavoritesDao
 import com.example.eray_altilar_final.data.remote.ProductService
 import com.example.eray_altilar_final.data.remote.UserApi
 import com.example.eray_altilar_final.data.repository.DatabaseRepositoryImpl
+import com.example.eray_altilar_final.data.repository.FirebaseMessageRepositoryImpl
 import com.example.eray_altilar_final.data.repository.ProductRepositoryImpl
 import com.example.eray_altilar_final.data.repository.RemoteConfigRepositoryImpl
 import com.example.eray_altilar_final.data.repository.UserRepositoryImpl
 import com.example.eray_altilar_final.domain.repository.DatabaseRepository
+import com.example.eray_altilar_final.domain.repository.FirebaseMessageRepository
 import com.example.eray_altilar_final.domain.repository.ProductRepository
 import com.example.eray_altilar_final.domain.repository.RemoteConfigRepository
 import com.example.eray_altilar_final.domain.repository.UserRepository
@@ -45,5 +47,11 @@ object RepositoryModule {
     @Singleton
     fun provideRemoteConfigRepository(remoteConfig: FirebaseRemoteConfig): RemoteConfigRepository {
         return RemoteConfigRepositoryImpl(remoteConfig = remoteConfig)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseMessageRepository(): FirebaseMessageRepository {
+        return FirebaseMessageRepositoryImpl()
     }
 }
