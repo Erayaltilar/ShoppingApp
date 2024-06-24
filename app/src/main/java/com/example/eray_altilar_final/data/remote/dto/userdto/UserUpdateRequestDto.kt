@@ -4,4 +4,5 @@ data class UserUpdateRequestDto(
     val firstName: String? = null,
     val lastName: String? = null,
     val email: String? = null,
+    val username: String? = null,
 )

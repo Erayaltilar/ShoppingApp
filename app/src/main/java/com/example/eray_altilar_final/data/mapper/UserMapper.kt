@@ -61,6 +61,7 @@ fun UserUpdateRequest.toUserUpdateRequestDto(): UserUpdateRequestDto {
         firstName = firstName,
         lastName = lastName,
         email = email,
+        username = username,
     )
 }
 

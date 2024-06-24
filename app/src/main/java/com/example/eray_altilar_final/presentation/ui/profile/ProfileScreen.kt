@@ -22,6 +22,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.eray_altilar_final.R
 import com.example.eray_altilar_final.core.Resource
+import com.example.eray_altilar_final.domain.model.productmodel.Product
+import com.example.eray_altilar_final.domain.model.usermodel.User
 import com.example.eray_altilar_final.domain.model.usermodel.UserUpdateRequest
 import com.example.eray_altilar_final.presentation.theme.Dimen
 import com.example.eray_altilar_final.presentation.theme.FF2196F3
@@ -31,115 +33,126 @@ import com.example.eray_altilar_final.presentation.theme.FFF44336
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
 
-    val state by viewModel.user.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     val userUpdateRequest = UserUpdateRequest(
         email = "eray@example.com",
         firstName = "Eray",
         lastName = "Altilar",
+        username = "ErayA"
     )
 
-    when (state) {
-        is Resource.Loading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+    with(uiState) {
+        if (loadingState) (
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                })
+        if (isHaveError) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(text = stringResource(R.string.user_error))
             }
         }
 
-        is Resource.Success -> {
-            state.data?.let {
-                Box(
+        ProfileScreenUI(
+            user = user,
+            updateUserOnClick = { viewModel.updateUser(user?.id ?: 0, userUpdateRequest) },
+            )
+
+    }
+}
+
+@Composable
+fun ProfileScreenUI(
+    user: User?,
+    updateUserOnClick: () -> Unit = {},
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        Color.FF2196F3,
+                        Color.FF21CBF3,
+                    ),
+                ),
+            )
+            .padding(Dimen.spacing_m1),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(Dimen.spacing_s2),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Card(
+                shape = RoundedCornerShape(Dimen.spacing_m1),
+                elevation = CardDefaults.elevatedCardElevation(Dimen.spacing_xxs),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Dimen.spacing_m1),
+            ) {
+                Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.FF2196F3,
-                                    Color.FF21CBF3,
-                                ),
-                            ),
-                        )
-                        .padding(Dimen.spacing_m1),
+                        .background(Color.White)
+                        .padding(Dimen.spacing_l),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Column(
+                    Image(
+                        painter = rememberAsyncImagePainter(user?.image ?: ""),
+                        contentDescription = stringResource(R.string.profil_resmi),
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(Dimen.spacing_s2),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            .size(120.dp)
+                            .clip(CircleShape),
+                    )
+                    Spacer(modifier = Modifier.height(Dimen.spacing_m1))
+                    Text(
+                        text = user?.username ?: "",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = Dimen.font_size_l,
+                        modifier = Modifier.padding(Dimen.spacing_xs),
+                    )
+                    Text(text = user?.email ?: "", fontSize = Dimen.font_size_18, modifier = Modifier.padding(Dimen.spacing_xxs))
+                    Text(text = user?.firstName ?: "", fontSize = Dimen.font_size_18, modifier = Modifier.padding(Dimen.spacing_xxs))
+                    Text(text = user?.lastName ?: "", fontSize = Dimen.font_size_18, modifier = Modifier.padding(Dimen.spacing_xxs))
+
+                    Spacer(modifier = Modifier.height(Dimen.spacing_m1))
+
+                    Button(
+                        onClick = updateUserOnClick,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.FFF44336,
+                            contentColor = Color.White,
+                        ),
+                        contentPadding = PaddingValues(),
                     ) {
-                        Card(
-                            shape = RoundedCornerShape(Dimen.spacing_m1),
-                            elevation = CardDefaults.elevatedCardElevation(Dimen.spacing_xxs),
+                        Box(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(Dimen.spacing_m1),
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .background(Color.White)
-                                    .padding(Dimen.spacing_l),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                            ) {
-                                Image(
-                                    painter = rememberAsyncImagePainter(it.image),
-                                    contentDescription = stringResource(R.string.profil_resmi),
-                                    modifier = Modifier
-                                        .size(120.dp)
-                                        .clip(CircleShape),
-                                )
-                                Spacer(modifier = Modifier.height(Dimen.spacing_m1))
-                                Text(
-                                    text = it.username,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = Dimen.font_size_l,
-                                    modifier = Modifier.padding(Dimen.spacing_xs),
-                                )
-                                Text(text = it.email, fontSize = Dimen.font_size_18, modifier = Modifier.padding(4.dp))
-                                Text(text = it.firstName, fontSize = Dimen.font_size_18, modifier = Modifier.padding(4.dp))
-                                Text(text = it.lastName, fontSize = Dimen.font_size_18, modifier = Modifier.padding(4.dp))
-
-                                Spacer(modifier = Modifier.height(Dimen.spacing_m1))
-
-                                Button(
-                                    onClick = {
-                                        viewModel.updateUser(it.id, userUpdateRequest)
-                                    },
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color.FFF44336,
-                                        contentColor = Color.White,
-                                    ),
-                                    contentPadding = PaddingValues(),
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .background(
-                                                brush = Brush.horizontalGradient(
-                                                    colors = listOf(
-                                                        Color.FF2196F3,
-                                                        Color.FF21CBF3,
-                                                    )
-                                                ),
-                                                shape = RoundedCornerShape(50)
-                                            )
-                                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                                    ) {
-                                        Text(
-                                            text = stringResource(R.string.profili_guncelle),
-                                            color = Color.White,
-                                            fontSize = 18.sp,
+                                .background(
+                                    brush = Brush.horizontalGradient(
+                                        colors = listOf(
+                                            Color.FF2196F3,
+                                            Color.FF21CBF3,
                                         )
-                                    }
-                                }
-                            }
+                                    ),
+                                    shape = RoundedCornerShape(50)
+                                )
+                                .padding(horizontal = Dimen.spacing_m1, vertical = Dimen.spacing_xs),
+                        ) {
+                            Text(
+                                text = stringResource(R.string.profili_guncelle),
+                                color = Color.White,
+                                fontSize = 18.sp,
+                            )
                         }
                     }
                 }
-            }
-        }
-
-        is Resource.Error -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = state.message.orEmpty(), color = Color.Red, fontSize = 18.sp)
             }
         }
     }

@@ -4,15 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
-import com.example.eray_altilar_final.core.SharedPreferencesManager
-import com.example.eray_altilar_final.core.SharedPreferencesManager.getToken
-import com.example.eray_altilar_final.domain.model.cartmodel.Cart
 import com.example.eray_altilar_final.domain.model.productmodel.Category
 import com.example.eray_altilar_final.domain.model.productmodel.Product
-import com.example.eray_altilar_final.domain.model.productmodel.Products
 import com.example.eray_altilar_final.domain.usecase.product.database.AddProductInFavoritesUseCase
 import com.example.eray_altilar_final.domain.usecase.product.database.AddProductToCartUseCase
-import com.example.eray_altilar_final.domain.usecase.product.database.GetProductsInFavoritesUseCase
 import com.example.eray_altilar_final.domain.usecase.product.remote.AddProductToCartFromApi
 import com.example.eray_altilar_final.domain.usecase.product.remote.GetCategoriesUseCase
 import com.example.eray_altilar_final.domain.usecase.product.remote.GetProductsByCategoryUseCase
@@ -24,7 +19,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
