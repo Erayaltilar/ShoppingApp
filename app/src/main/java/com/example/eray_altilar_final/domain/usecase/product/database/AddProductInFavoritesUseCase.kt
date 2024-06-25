@@ -6,9 +6,7 @@ import com.example.eray_altilar_final.domain.repository.DatabaseRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class AddProductInFavoritesUseCase @Inject constructor(
-    private val repository: DatabaseRepository,
-) {
+class AddProductInFavoritesUseCase @Inject constructor(private val repository: DatabaseRepository) {
     operator fun invoke(userId: Long, productId: Long, name: String, price: Double, thumbnail: String): Flow<Resource<Favorites>> {
         return repository.addProductToFavorites(userId, productId, name, price, thumbnail)
     }

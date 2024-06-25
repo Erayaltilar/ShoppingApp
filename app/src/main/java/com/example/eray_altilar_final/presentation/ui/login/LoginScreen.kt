@@ -23,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -107,7 +106,9 @@ fun LoginScreenUI(
                 contentDescription = stringResource(R.string.app_logo),
                 modifier = Modifier.size(128.dp),
             )
+
             Spacer(modifier = Modifier.height(Dimen.spacing_m1))
+
             Text(
                 text = stringResource(R.string.shopping_app),
                 style = MaterialTheme.typography.headlineMedium,
@@ -124,7 +125,9 @@ fun LoginScreenUI(
                     .background(Color.White, shape = RoundedCornerShape(Dimen.spacing_xs))
                     .padding(bottom = Dimen.spacing_m1),
             )
+
             Spacer(modifier = Modifier.height(Dimen.spacing_m1))
+
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
@@ -135,7 +138,9 @@ fun LoginScreenUI(
                     .fillMaxWidth()
                     .background(Color.White, shape = RoundedCornerShape(Dimen.spacing_xs)),
             )
+
             Spacer(modifier = Modifier.height(Dimen.spacing_m1))
+
             Button(
                 onClick = onLoginButtonClicked,
                 modifier = Modifier

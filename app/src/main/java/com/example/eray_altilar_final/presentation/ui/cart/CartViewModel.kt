@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    val getProductsInCartUseCase: GetProductsInCartUseCase
+    val getProductsInCartUseCase: GetProductsInCartUseCase,
 ) : ViewModel() {
 
 
@@ -24,7 +24,7 @@ class CartViewModel @Inject constructor(
         getProductsInCart()
     }
 
-    fun getProductsInCart() {
+    private fun getProductsInCart() {
         viewModelScope.launch {
             getProductsInCartUseCase()
                 .collect { result ->

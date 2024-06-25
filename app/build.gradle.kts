@@ -92,11 +92,10 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui)
 
-
     // Room
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
-    kapt (libs.room.compiler)
+    kapt(libs.room.compiler)
 
     // Hilt
     implementation(libs.hilt.android)
@@ -120,11 +119,9 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
 
-
     // Glide
     implementation(libs.glide)
 
     // Coil
     implementation(libs.coil.compose)
-
 }

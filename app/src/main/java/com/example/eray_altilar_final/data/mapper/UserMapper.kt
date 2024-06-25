@@ -56,6 +56,7 @@ fun UserUpdateRequestDto.toUserUpdateRequest(): UserUpdateRequest {
         email = email,
     )
 }
+
 fun UserUpdateRequest.toUserUpdateRequestDto(): UserUpdateRequestDto {
     return UserUpdateRequestDto(
         firstName = firstName,

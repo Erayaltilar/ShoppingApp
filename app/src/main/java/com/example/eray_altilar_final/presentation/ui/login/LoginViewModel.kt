@@ -6,15 +6,13 @@ import com.example.eray_altilar_final.R
 import com.example.eray_altilar_final.core.Resource
 import com.example.eray_altilar_final.core.SharedPreferencesManager.saveToken
 import com.example.eray_altilar_final.core.SharedPreferencesManager.saveUserId
-import com.example.eray_altilar_final.domain.model.LoginRequest
+import com.example.eray_altilar_final.domain.model.loginmodel.LoginRequest
 import com.example.eray_altilar_final.domain.model.usermodel.User
 import com.example.eray_altilar_final.domain.usecase.remote_config.FetchRemoteConfigUseCase
 import com.example.eray_altilar_final.domain.usecase.remote_config.GetRemoteConfigValueUseCase
 import com.example.eray_altilar_final.domain.usecase.user.GetUserByTokenUseCase
 import com.example.eray_altilar_final.domain.usecase.user.LoginUseCase
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

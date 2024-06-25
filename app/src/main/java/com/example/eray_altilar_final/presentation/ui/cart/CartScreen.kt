@@ -13,30 +13,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.example.eray_altilar_final.R
 import com.example.eray_altilar_final.core.Resource
 import com.example.eray_altilar_final.presentation.theme.Dimen
 
 
 @Composable
-fun CartScreen(viewModel :  CartViewModel = hiltViewModel()) {
-
-
+fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
 
     val cartState by viewModel.cart.collectAsState()
 
-    LazyColumn(modifier = Modifier
-        .fillMaxSize()
-        .padding(Dimen.spacing_l2)) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(Dimen.spacing_l2)
+    ) {
         when (val result = cartState) {
             is Resource.Loading -> {
                 item {
-                    // Display a loading indicator
                     Text("Loading...")
                 }
             }
+
             is Resource.Success -> {
                 Log.d("CART SIZE", result.data?.size.toString())
                 items(result.data?.size ?: 0) { item ->
@@ -44,19 +46,21 @@ fun CartScreen(viewModel :  CartViewModel = hiltViewModel()) {
                     Column {
                         Image(
                             painter = rememberAsyncImagePainter(product?.thumbnail),
-                            contentDescription = "Cart Product Image",
+                            contentDescription = stringResource(R.string.cart_product_image),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(200.dp)
                         )
+
                         Text("Product Name: ${product?.name}")
+
                         Text("Product Price: ${product?.price}")
                     }
                 }
             }
+
             is Resource.Error -> {
                 item {
-                    // Display the error message
                     Text("Error: ${result.message}")
                 }
             }

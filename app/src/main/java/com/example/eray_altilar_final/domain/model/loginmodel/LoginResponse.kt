@@ -1,12 +1,6 @@
-package com.example.eray_altilar_final.domain.model
+package com.example.eray_altilar_final.domain.model.loginmodel
 
 import com.example.eray_altilar_final.domain.model.usermodel.User
-
-data class LoginRequest(
-    val username: String,
-    val password: String,
-    val expiresInMins: Int = 30,
-)
 
 data class LoginResponse(
     val token: String,

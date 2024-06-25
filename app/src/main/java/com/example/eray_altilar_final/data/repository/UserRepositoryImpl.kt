@@ -7,8 +7,8 @@ import com.example.eray_altilar_final.data.mapper.toUser
 import com.example.eray_altilar_final.data.mapper.toUserUpdateRequestDto
 import com.example.eray_altilar_final.data.mapper.toUsers
 import com.example.eray_altilar_final.data.remote.UserApi
-import com.example.eray_altilar_final.domain.model.LoginRequest
-import com.example.eray_altilar_final.domain.model.LoginResponse
+import com.example.eray_altilar_final.domain.model.loginmodel.LoginRequest
+import com.example.eray_altilar_final.domain.model.loginmodel.LoginResponse
 import com.example.eray_altilar_final.domain.model.usermodel.User
 import com.example.eray_altilar_final.domain.model.usermodel.UserUpdateRequest
 import com.example.eray_altilar_final.domain.model.usermodel.Users

@@ -2,10 +2,10 @@ package com.example.eray_altilar_final.data.mapper
 
 import com.example.eray_altilar_final.data.remote.dto.logindto.LoginRequestDto
 import com.example.eray_altilar_final.data.remote.dto.logindto.LoginResponseDto
-import com.example.eray_altilar_final.domain.model.LoginRequest
-import com.example.eray_altilar_final.domain.model.LoginResponse
+import com.example.eray_altilar_final.domain.model.loginmodel.LoginRequest
+import com.example.eray_altilar_final.domain.model.loginmodel.LoginResponse
 
-fun LoginRequest.toLoginRequestDto() : LoginRequestDto {
+fun LoginRequest.toLoginRequestDto(): LoginRequestDto {
     return LoginRequestDto(
         username = username,
         password = password,
@@ -13,7 +13,7 @@ fun LoginRequest.toLoginRequestDto() : LoginRequestDto {
     )
 }
 
-fun LoginResponseDto.toLoginResponse() : LoginResponse {
+fun LoginResponseDto.toLoginResponse(): LoginResponse {
     return LoginResponse(
         token = token,
         expires = expires,

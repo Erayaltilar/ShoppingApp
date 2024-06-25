@@ -57,7 +57,9 @@ fun FavoritesScreen(viewModel: FavoritesViewModel = hiltViewModel()) {
 
 @Composable
 fun FavoritesScreenUI(favorites: List<Favorites>) {
-    LazyColumn(modifier = Modifier.fillMaxSize().padding(top = Dimen.spacing_l2)) {
+    LazyColumn(modifier = Modifier
+        .fillMaxSize()
+        .padding(top = Dimen.spacing_l2)) {
         items(favorites.size) { index ->
             FavoriteItem(favorites.map { it.copy() }[index])
         }
@@ -71,38 +73,38 @@ fun FavoriteItem(favorites: Favorites) {
         modifier = Modifier.padding(Dimen.spacing_xs),
         elevation = CardDefaults.elevatedCardElevation(),
     ) {
-            Column(modifier = Modifier.padding(Dimen.spacing_m1)) {
-                Box(
+        Column(modifier = Modifier.padding(Dimen.spacing_m1)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+            ) {
+                Image(
+                    painter = rememberAsyncImagePainter(favorites.thumbnail),
+                    contentDescription = stringResource(R.string.content_description_product_image),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(120.dp),
-                ) {
-                    Image(
-                        painter = rememberAsyncImagePainter(favorites.thumbnail),
-                        contentDescription = stringResource(R.string.content_description_product_image),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(150.dp),
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(Dimen.spacing_xs))
-
-                Text(
-                    text = favorites.name ?: "",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
+                        .height(150.dp),
                 )
-
-                Spacer(modifier = Modifier.height(Dimen.spacing_xxs))
-
-                Text(
-                    text = "${favorites.price} USD",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Gray,
-                )
-
-                Spacer(modifier = Modifier.height(Dimen.spacing_xs))
             }
+
+            Spacer(modifier = Modifier.height(Dimen.spacing_xs))
+
+            Text(
+                text = favorites.name ?: "",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+            )
+
+            Spacer(modifier = Modifier.height(Dimen.spacing_xxs))
+
+            Text(
+                text = "${favorites.price} USD",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Gray,
+            )
+
+            Spacer(modifier = Modifier.height(Dimen.spacing_xs))
         }
     }
+}

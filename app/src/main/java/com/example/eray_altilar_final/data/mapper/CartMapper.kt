@@ -2,7 +2,6 @@ package com.example.eray_altilar_final.data.mapper
 
 import com.example.eray_altilar_final.data.local.entity.CartEntity
 import com.example.eray_altilar_final.domain.model.cartmodel.Cart
-import com.example.eray_altilar_final.domain.model.productmodel.Product
 
 fun CartEntity.toCart(): Cart {
     return Cart(
@@ -11,7 +10,7 @@ fun CartEntity.toCart(): Cart {
         name = name,
         thumbnail = thumbnail,
         price = price,
-        userId = userId
+        userId = userId,
     )
 }
 
@@ -22,6 +21,6 @@ fun Cart.toCartEntity(): CartEntity {
         name = name,
         thumbnail = thumbnail,
         price = price,
-        userId = userId
+        userId = userId,
     )
 }

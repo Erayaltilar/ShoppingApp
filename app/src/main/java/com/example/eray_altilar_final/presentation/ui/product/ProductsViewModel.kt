@@ -62,7 +62,7 @@ class ProductsViewModel @Inject constructor(
                         state.copy(
                             loadingState = false,
                             isDislikeSuccess = true,
-                            )
+                        )
                     }
                 }
 

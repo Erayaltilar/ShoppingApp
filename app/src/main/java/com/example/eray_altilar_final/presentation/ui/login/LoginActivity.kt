@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import com.example.eray_altilar_final.core.SharedPreferencesManager
 import com.example.eray_altilar_final.presentation.ui.main.MainActivity
 import com.google.firebase.FirebaseApp

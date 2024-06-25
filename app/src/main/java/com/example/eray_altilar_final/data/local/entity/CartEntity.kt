@@ -10,5 +10,5 @@ data class CartEntity(
     val name: String,
     val thumbnail: String,
     val price: Double,
-    val userId: Long
+    val userId: Long,
 )

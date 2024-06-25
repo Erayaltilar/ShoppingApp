@@ -1,17 +1,14 @@
 package com.example.eray_altilar_final.presentation.ui.cart
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.eray_altilar_final.R
-import com.example.eray_altilar_final.presentation.ui.product.ProductsViewModel
-import com.example.eray_altilar_final.presentation.ui.profile.ProfileScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 

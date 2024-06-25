@@ -9,15 +9,14 @@ object SharedPreferencesManager {
     private const val USER_ID = "user_id"
     private lateinit var sharedPreferences: SharedPreferences
 
-    // initialize function to be called once in Application class or MainActivity
     fun init(context: Context) {
         sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
     fun saveUserId(userId: Long) {
-     val editor = sharedPreferences.edit()
-     editor.putLong(USER_ID, userId)
-     editor.apply()
+        val editor = sharedPreferences.edit()
+        editor.putLong(USER_ID, userId)
+        editor.apply()
     }
 
     fun getUserId(): Long {

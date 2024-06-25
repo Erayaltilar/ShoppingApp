@@ -8,14 +8,11 @@ import com.example.eray_altilar_final.data.local.entity.CartEntity
 import com.example.eray_altilar_final.data.local.entity.FavoritesEntity
 import com.example.eray_altilar_final.data.mapper.toCart
 import com.example.eray_altilar_final.data.mapper.toFavorites
-import com.example.eray_altilar_final.data.remote.ProductService
 import com.example.eray_altilar_final.domain.model.cartmodel.Cart
 import com.example.eray_altilar_final.domain.model.favoritesmodel.Favorites
-import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.domain.repository.DatabaseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DatabaseRepositoryImpl @Inject constructor(

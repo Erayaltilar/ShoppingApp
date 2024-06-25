@@ -4,6 +4,9 @@
     <string name="navigation_drawer_open">Open drawer</string>
     <string name="navigation_drawer_close">Close drawer</string>
 
+    <!-- Search Screen -->
+    <string name="search">Search</string>
+
     <!-- Fragments -->
     <string name="hello_product_fragment">Hello product fragment</string>
     <string name="hello_profile_fragment">Hello profile fragment</string>
@@ -26,4 +29,7 @@
     <string name="app_logo">App Logo</string>
     <string name="shopping_app">Shopping App</string>
     <string name="user_error">USER ERROR</string>
+
+    <!-- Cart Screen -->
+    <string name="cart_product_image">Cart Product Image</string>
 </resources>

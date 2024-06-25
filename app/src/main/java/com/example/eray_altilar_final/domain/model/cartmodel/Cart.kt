@@ -7,5 +7,5 @@ data class Cart(
     val name: String,
     val thumbnail: String,
     val price: Double,
-    val userId: Long
+    val userId: Long,
 )
