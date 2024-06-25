@@ -79,7 +79,13 @@ class DatabaseRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun removeProductFromFavorites(favoritesId: Long): Flow<Resource<Unit>> {
-        TODO("Not yet implemented")
+    override fun removeProductFromFavorites(productId: Long): Flow<Resource<Favorites>> = flow {
+        try {
+            emit(Resource.Loading())
+            favoritesDao.deleteFavoriteItemByProductId(productId)
+            emit(Resource.Success(Favorites(productId)))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.localizedMessage.orEmpty()))
+        }
     }
 }

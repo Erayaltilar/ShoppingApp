@@ -1,6 +1,5 @@
 package com.example.eray_altilar_final.presentation.ui.product
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,8 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.rememberScrollState
@@ -47,6 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.eray_altilar_final.R
 import com.example.eray_altilar_final.core.SharedPreferencesManager.getUserId
+import com.example.eray_altilar_final.domain.model.favoritesmodel.Favorites
 import com.example.eray_altilar_final.domain.model.productmodel.Category
 import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.presentation.theme.Dimen
@@ -79,8 +77,13 @@ fun ProductScreen(
         if (isLikeSuccess) {
             Toast.makeText(context, "Liked", Toast.LENGTH_LONG).show()
         }
+        if (isDislikeSuccess) {
+            Toast.makeText(context, "DisLiked", Toast.LENGTH_LONG).show()
+        }
 
         ProductScreenUI(
+
+            productsInFavorites = productsInFavorites,
             categories = categories,
             onCategoryClick = {
                 viewModel.loadProductsByCategory(it)
@@ -102,16 +105,19 @@ fun ProductScreen(
                 )
             },
             addFavoriteClicked = {
-                viewModel.addProductInFavorites(
-                    getUserId(),
-                    it.id ?: 0,
-                    it.title ?: "",
-                    it.price ?: 0.0,
-                    it.thumbnail ?: "",
-                )
-                Log.d("ProductAddFavoriteClicked", "addFavoriteClicked: $it")
-                Log.d("UserIDAddFavoriteClicked", "addFavoriteClicked: ${getUserId()}")
-
+                if (it.id in productsInFavorites.map { product -> product.productId }) {
+                    viewModel.removeFromFavorites(
+                        it.id ?: 0,
+                    )
+                } else {
+                    viewModel.addProductInFavorites(
+                        getUserId(),
+                        it.id ?: 0,
+                        it.title ?: "",
+                        it.price ?: 0.0,
+                        it.thumbnail ?: "",
+                    )
+                }
             },
         )
     }
@@ -119,6 +125,7 @@ fun ProductScreen(
 
 @Composable
 fun ProductScreenUI(
+    productsInFavorites: List<Favorites>,
     categories: List<Category>,
     onCategoryClick: (String) -> Unit,
     products: List<Product>,
@@ -142,6 +149,7 @@ fun ProductScreenUI(
         ) {
             items(products.size) { productCount ->
                 ProductItem(
+                    favorites = productsInFavorites,
                     product = products[productCount],
                     onAddToCart = onAddToCartClicked, // TODO: onAddToCartClickedForApi() Api çalışma durumunda çağırılacak fonksyion
                     addFavoriteClicked = addFavoriteClicked,
@@ -186,7 +194,12 @@ fun CategoryList(categories: List<Category>, onCategoryClick: (String) -> Unit) 
 }
 
 @Composable
-fun ProductItem(product: Product, addFavoriteClicked: (Product) -> Unit = {}, onAddToCart: (Product) -> Unit = {}) {
+fun ProductItem(
+    product: Product,
+    favorites: List<Favorites> = emptyList(),
+    addFavoriteClicked: (Product) -> Unit = {},
+    onAddToCart: (Product) -> Unit = {},
+) {
     Card(
         shape = RoundedCornerShape(Dimen.spacing_s2),
         modifier = Modifier.padding(Dimen.spacing_xs),
@@ -213,11 +226,19 @@ fun ProductItem(product: Product, addFavoriteClicked: (Product) -> Unit = {}, on
                         .padding(Dimen.spacing_xs)
                         .background(Color.White, shape = RoundedCornerShape(50)),
                 ) {
-                    Icon(
-                        painter = rememberAsyncImagePainter(R.drawable.ic_heart),
-                        contentDescription = stringResource(R.string.contentDescriptionFavorite),
-                        tint = Color.Red,
-                    )
+                    if (favorites.any { it.productId == product.id }) {
+                        Icon(
+                            painter = rememberAsyncImagePainter(R.drawable.ic_heart_filled),
+                            contentDescription = stringResource(R.string.contentDescriptionFavorite),
+                            tint = Color.Red,
+                        )
+                    } else {
+                        Icon(
+                            painter = rememberAsyncImagePainter(R.drawable.ic_heart),
+                            contentDescription = stringResource(R.string.contentDescriptionFavorite),
+                            tint = Color.Gray,
+                        )
+                    }
                 }
             }
 

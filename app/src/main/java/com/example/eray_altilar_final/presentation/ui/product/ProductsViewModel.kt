@@ -4,10 +4,13 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
+import com.example.eray_altilar_final.domain.model.favoritesmodel.Favorites
 import com.example.eray_altilar_final.domain.model.productmodel.Category
 import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.domain.usecase.product.database.AddProductInFavoritesUseCase
 import com.example.eray_altilar_final.domain.usecase.product.database.AddProductToCartUseCase
+import com.example.eray_altilar_final.domain.usecase.product.database.GetProductsInFavoritesUseCase
+import com.example.eray_altilar_final.domain.usecase.product.database.RemoveProductFromFavorites
 import com.example.eray_altilar_final.domain.usecase.product.remote.AddProductToCartFromApi
 import com.example.eray_altilar_final.domain.usecase.product.remote.GetCategoriesUseCase
 import com.example.eray_altilar_final.domain.usecase.product.remote.GetProductsByCategoryUseCase
@@ -27,8 +30,10 @@ class ProductsViewModel @Inject constructor(
     private val addProductToCartUseCase: AddProductToCartUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val getProductsByCategoryUseCase: GetProductsByCategoryUseCase,
+    private val getProductsInFavoritesUseCase: GetProductsInFavoritesUseCase,
     private val addProductInFavoritesUseCase: AddProductInFavoritesUseCase,
     private val addProductToCartFromApi: AddProductToCartFromApi,
+    private val removeProductFromFavorites: RemoveProductFromFavorites,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProductScreenUIState())
@@ -37,14 +42,14 @@ class ProductsViewModel @Inject constructor(
     private var currentPage = 0
     private val pageSize = 30
 
-
     init {
+        getProductsInFavorites()
         loadProducts()
         loadCategories()
     }
 
-    private fun loadProducts() {
-        getProductsUseCase(pageSize, currentPage * pageSize).onEach {
+    fun removeFromFavorites(productId: Long) {
+        removeProductFromFavorites(productId).onEach {
             when (it) {
                 is Resource.Loading -> {
                     _uiState.update { state ->
@@ -56,9 +61,8 @@ class ProductsViewModel @Inject constructor(
                     _uiState.update { state ->
                         state.copy(
                             loadingState = false,
-                            isSuccessForGetProducts = true,
-                            products = it.data?.products ?: emptyList(),
-                        )
+                            isDislikeSuccess = true,
+                            )
                     }
                 }
 
@@ -67,39 +71,6 @@ class ProductsViewModel @Inject constructor(
                         state.copy(
                             loadingState = false,
                             isHaveError = true,
-                            errorMessage = it.errorMessage.orEmpty(),
-                        )
-                    }
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
-
-    private fun loadCategories() {
-        getCategoriesUseCase().onEach {
-            when (it) {
-                is Resource.Loading -> {
-                    _uiState.update { state ->
-                        state.copy(loadingState = true)
-                    }
-                }
-
-                is Resource.Success -> {
-                    _uiState.update { state ->
-                        state.copy(
-                            loadingState = false,
-                            isSuccessForCategory = true,
-                            categories = it.data ?: emptyList(),
-                        )
-                    }
-                }
-
-                is Resource.Error -> {
-                    _uiState.update { state ->
-                        state.copy(
-                            loadingState = false,
-                            isHaveError = true,
-                            errorMessage = it.errorMessage.orEmpty(),
                         )
                     }
                 }
@@ -202,10 +173,106 @@ class ProductsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun loadProducts() {
+        getProductsUseCase(pageSize, currentPage * pageSize).onEach {
+            when (it) {
+                is Resource.Loading -> {
+                    _uiState.update { state ->
+                        state.copy(loadingState = true)
+                    }
+                }
+
+                is Resource.Success -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            loadingState = false,
+                            isSuccessForGetProducts = true,
+                            products = it.data?.products ?: emptyList(),
+                        )
+                    }
+                }
+
+                is Resource.Error -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            loadingState = false,
+                            isHaveError = true,
+                            errorMessage = it.errorMessage.orEmpty(),
+                        )
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun loadCategories() {
+        getCategoriesUseCase().onEach {
+            when (it) {
+                is Resource.Loading -> {
+                    _uiState.update { state ->
+                        state.copy(loadingState = true)
+                    }
+                }
+
+                is Resource.Success -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            loadingState = false,
+                            isSuccessForCategory = true,
+                            categories = it.data ?: emptyList(),
+                        )
+                    }
+                }
+
+                is Resource.Error -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            loadingState = false,
+                            isHaveError = true,
+                            errorMessage = it.errorMessage.orEmpty(),
+                        )
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun getProductsInFavorites() {
+        getProductsInFavoritesUseCase().onEach {
+            when (it) {
+                is Resource.Loading -> {
+                    _uiState.update { state ->
+                        state.copy(loadingState = true)
+                    }
+                }
+
+                is Resource.Success -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            loadingState = false,
+                            isSuccess = true,
+                            productsInFavorites = it.data ?: emptyList(),
+                        )
+                    }
+                }
+
+                is Resource.Error -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            loadingState = false,
+                            isHaveError = true,
+                        )
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
     data class ProductScreenUIState(
         val loadingState: Boolean = false,
         val isHaveError: Boolean = false,
         val isLikeSuccess: Boolean = false,
+        val isDislikeSuccess: Boolean = false,
         val isSuccessAddToCart: Boolean = false,
         val isSuccess: Boolean = false,
         val isSuccessForGetProducts: Boolean = false,
@@ -215,5 +282,6 @@ class ProductsViewModel @Inject constructor(
         val product: Product? = null,
         val categories: List<Category> = emptyList(),
         val selectedCategory: String = "",
+        val productsInFavorites: List<Favorites> = emptyList(),
     )
 }

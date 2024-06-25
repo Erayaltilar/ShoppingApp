@@ -1,6 +1,7 @@
 package com.example.eray_altilar_final.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -17,4 +18,7 @@ interface FavoritesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavoriteItem(favoriteItem: FavoritesEntity)
+
+    @Query("DELETE FROM favorites WHERE productId = :productId")
+    suspend fun deleteFavoriteItemByProductId(productId: Long)
 }
