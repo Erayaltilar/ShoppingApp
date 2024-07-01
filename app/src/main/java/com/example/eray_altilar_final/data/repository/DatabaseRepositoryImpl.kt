@@ -31,8 +31,14 @@ class DatabaseRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun removeProductFromCart(cartId: Long): Flow<Resource<Unit>> {
-        TODO("Not yet implemented")
+    override fun removeProductFromCart(productId: Long): Flow<Resource<Unit>> = flow {
+        try {
+            emit(Resource.Loading())
+            val data = cartDao.deleteCartItemById(productId)
+            emit(Resource.Success(data))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.localizedMessage.orEmpty()))
+        }
     }
 
     override fun getProductsInCart(): Flow<Resource<List<Cart>>> = flow {
