@@ -74,18 +74,19 @@ fun LoginScreen(
 
         LoginScreenUI(
             backgroundColor = backgroundColor,
-            onLoginButtonClicked = {
-                //viewModel.getToken("michaelw", "michaelwpass")
-                viewModel.getToken("emilys", "emilyspass")
+            onLoginButtonClicked = { username, password ->
+                viewModel.getToken(username, password)
             },
         )
     }
 }
+//viewModel.getToken("michaelw", "michaelwpass")
+//viewModel.getToken("emilys", "emilyspass")
 
 @Composable
 fun LoginScreenUI(
     backgroundColor: String,
-    onLoginButtonClicked: () -> Unit,
+    onLoginButtonClicked: (String, String) -> Unit,
 ) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -143,7 +144,7 @@ fun LoginScreenUI(
             Spacer(modifier = Modifier.height(Dimen.spacing_m1))
 
             Button(
-                onClick = onLoginButtonClicked,
+                onClick = { onLoginButtonClicked(username, password) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
