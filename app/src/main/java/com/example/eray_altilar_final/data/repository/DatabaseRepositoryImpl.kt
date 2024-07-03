@@ -69,6 +69,20 @@ class DatabaseRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getFavoritesByUserId(userId: Long): Flow<Resource<List<Favorites>>> = flow {
+        try {
+            emit(Resource.Loading())
+            favoritesDao.getFavoriteItemById(userId).collect { item ->
+                val favoritesItems = item.map { favoritesEntity ->
+                    favoritesEntity.toFavorites()
+                }
+                emit(Resource.Success(favoritesItems))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error(e.localizedMessage.orEmpty()))
+        }
+    }
+
     override fun addProductToFavorites(userId: Long, productId: Long, name: String, price: Double, thumbnail: String): Flow<Resource<Favorites>> =
         flow {
             try {

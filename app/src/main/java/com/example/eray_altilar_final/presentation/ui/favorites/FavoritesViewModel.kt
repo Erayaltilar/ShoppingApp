@@ -3,7 +3,9 @@ package com.example.eray_altilar_final.presentation.ui.favorites
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
+import com.example.eray_altilar_final.core.SharedPreferencesManager.getUserId
 import com.example.eray_altilar_final.domain.model.favoritesmodel.Favorites
+import com.example.eray_altilar_final.domain.usecase.product.database.GetFavoritesByUserIdUseCase
 import com.example.eray_altilar_final.domain.usecase.product.database.GetProductsInFavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val getProductsInFavoritesUseCase: GetProductsInFavoritesUseCase,
+    private val getFavoritesByUserIdUseCase: GetFavoritesByUserIdUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(FavoritesUiState())
@@ -26,8 +28,8 @@ class FavoritesViewModel @Inject constructor(
         getProductsInFavorites()
     }
 
-    private fun getProductsInFavorites() {
-        getProductsInFavoritesUseCase().onEach {
+    private fun getProductsInFavorites(userId: Long = getUserId()) {
+        getFavoritesByUserIdUseCase(userId).onEach {
             when (it) {
                 is Resource.Loading -> {
                     _uiState.update { state ->

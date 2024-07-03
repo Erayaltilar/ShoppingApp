@@ -75,7 +75,8 @@ fun LoginScreen(
         LoginScreenUI(
             backgroundColor = backgroundColor,
             onLoginButtonClicked = {
-                viewModel.getToken("michaelw", "michaelwpass")
+                //viewModel.getToken("michaelw", "michaelwpass")
+                viewModel.getToken("emilys", "emilyspass")
             },
         )
     }

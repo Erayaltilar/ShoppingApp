@@ -1,5 +1,6 @@
 package com.example.eray_altilar_final.presentation.ui.product
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -118,6 +119,7 @@ fun ProductScreen(
                         it.thumbnail ?: "",
                     )
                 }
+                Log.d("UserId", "${getUserId()}")
             },
         )
     }

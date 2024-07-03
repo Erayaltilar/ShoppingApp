@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
+import com.example.eray_altilar_final.core.SharedPreferencesManager.getUserId
 import com.example.eray_altilar_final.domain.model.favoritesmodel.Favorites
 import com.example.eray_altilar_final.domain.model.productmodel.Category
 import com.example.eray_altilar_final.domain.model.productmodel.Product
 import com.example.eray_altilar_final.domain.usecase.product.database.AddProductInFavoritesUseCase
 import com.example.eray_altilar_final.domain.usecase.product.database.AddProductToCartUseCase
+import com.example.eray_altilar_final.domain.usecase.product.database.GetFavoritesByUserIdUseCase
 import com.example.eray_altilar_final.domain.usecase.product.database.GetProductsInFavoritesUseCase
 import com.example.eray_altilar_final.domain.usecase.product.database.RemoveProductFromFavorites
 import com.example.eray_altilar_final.domain.usecase.product.remote.AddProductToCartFromApi
@@ -30,7 +32,7 @@ class ProductsViewModel @Inject constructor(
     private val addProductToCartUseCase: AddProductToCartUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val getProductsByCategoryUseCase: GetProductsByCategoryUseCase,
-    private val getProductsInFavoritesUseCase: GetProductsInFavoritesUseCase,
+    private val getFavoritesByUserIdUseCase: GetFavoritesByUserIdUseCase,
     private val addProductInFavoritesUseCase: AddProductInFavoritesUseCase,
     private val addProductToCartFromApi: AddProductToCartFromApi,
     private val removeProductFromFavorites: RemoveProductFromFavorites,
@@ -43,6 +45,7 @@ class ProductsViewModel @Inject constructor(
     private val pageSize = 30
 
     init {
+        val userId = getUserId()
         getProductsInFavorites()
         loadProducts()
         loadCategories()
@@ -237,8 +240,8 @@ class ProductsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun getProductsInFavorites() {
-        getProductsInFavoritesUseCase().onEach {
+    private fun getProductsInFavorites(userId: Long = getUserId()) {
+        getFavoritesByUserIdUseCase(userId).onEach {
             when (it) {
                 is Resource.Loading -> {
                     _uiState.update { state ->
