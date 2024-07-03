@@ -2,10 +2,12 @@ package com.example.eray_altilar_final.presentation.ui.main
 
 import android.os.Bundle
 import android.widget.FrameLayout
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.eray_altilar_final.R
 import com.example.eray_altilar_final.core.SharedPreferencesManager
 import com.example.eray_altilar_final.databinding.ActivityMainBinding
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var headerBinding: DrawerHeaderBinding
+    private val viewModel by viewModels<MainViewModel>()
 
     private var navContent: FrameLayout? = null
 
@@ -87,8 +90,10 @@ class MainActivity : AppCompatActivity() {
 
         val headerView = binding.navigationView.getHeaderView(0)
         headerBinding = DrawerHeaderBinding.bind(headerView)
-        headerBinding.apply {
-            textView.text = "Eray Altilar"
+        lifecycleScope.launchWhenStarted {
+            viewModel.uiState.collect { uiState ->
+                headerBinding.textView.text ="${uiState.user?.firstName} ${uiState.user?.lastName}"
+            }
         }
     }
 
