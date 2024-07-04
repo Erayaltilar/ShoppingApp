@@ -3,10 +3,13 @@ package com.example.eray_altilar_final.presentation.ui.cart
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.eray_altilar_final.core.Resource
+import com.example.eray_altilar_final.core.SharedPreferencesManager.getUserId
 import com.example.eray_altilar_final.domain.model.cartmodel.Cart
 import com.example.eray_altilar_final.domain.model.favoritesmodel.Favorites
 import com.example.eray_altilar_final.domain.model.productmodel.Category
 import com.example.eray_altilar_final.domain.model.productmodel.Product
+import com.example.eray_altilar_final.domain.usecase.product.database.GetFavoritesByUserIdUseCase
+import com.example.eray_altilar_final.domain.usecase.product.database.GetProductsInCartByIdUseCase
 import com.example.eray_altilar_final.domain.usecase.product.database.GetProductsInCartUseCase
 import com.example.eray_altilar_final.domain.usecase.product.database.RemoveProductFromCartUseCase
 import com.example.eray_altilar_final.presentation.ui.product.ProductsViewModel
@@ -22,7 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    val getProductsInCartUseCase: GetProductsInCartUseCase,
+    val getProductsInCartByIdUseCase: GetProductsInCartByIdUseCase,
     val removeProductFromCartUseCase: RemoveProductFromCartUseCase,
 ) : ViewModel() {
 
@@ -63,8 +66,8 @@ class CartViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun getProductsInCart() {
-        getProductsInCartUseCase().onEach {
+    private fun getProductsInCart(userId: Long = getUserId()) {
+        getProductsInCartByIdUseCase(userId).onEach {
             when (it) {
                 is Resource.Loading -> {
                     _uiState.update { state ->

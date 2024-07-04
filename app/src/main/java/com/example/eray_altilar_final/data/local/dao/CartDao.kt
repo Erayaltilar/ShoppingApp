@@ -13,7 +13,7 @@ interface CartDao {
     fun getAllCartItems(): Flow<List<CartEntity>>
 
     @Query("SELECT * FROM cart WHERE userId = :userId")
-    fun getCartItemById(userId: Long): Flow<CartEntity>
+    fun getCartItemsById(userId: Long): Flow<List<CartEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCartItem(cartItem: CartEntity)

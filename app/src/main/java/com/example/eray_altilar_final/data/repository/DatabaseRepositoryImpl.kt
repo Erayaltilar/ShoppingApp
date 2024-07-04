@@ -13,6 +13,7 @@ import com.example.eray_altilar_final.domain.model.favoritesmodel.Favorites
 import com.example.eray_altilar_final.domain.repository.DatabaseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DatabaseRepositoryImpl @Inject constructor(
@@ -53,6 +54,21 @@ class DatabaseRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             emit(Resource.Error(e.localizedMessage.orEmpty()))
         }
+    }
+
+    override fun getCartByUserId(userId: Long): Flow<Resource<List<Cart>>> = flow {
+        try {
+            emit(Resource.Loading())
+            cartDao.getCartItemsById(userId).collect {
+                val cartItems = it.map { cartEntity ->
+                    cartEntity.toCart()
+                }
+                emit(Resource.Success(cartItems))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error(e.localizedMessage.orEmpty()))
+        }
+
     }
 
     override fun getProductsInFavorites(): Flow<Resource<List<Favorites>>> = flow {
