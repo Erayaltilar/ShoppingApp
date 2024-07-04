@@ -35,8 +35,12 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getUserByToken(token: String): Flow<Resource<User>> = flow {
         emit(Resource.Loading())
-        val response = userApi.getUserByToken(token = token)
-        emit(Resource.Success(data = response.toUser()))
+        try {
+            val response = userApi.getUserByToken(token = token)
+            emit(Resource.Success(data = response.toUser()))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.localizedMessage.orEmpty()))
+        }
     }
 
     override fun filterUsers(key: String, value: String): Flow<Resource<User>> = flow {
@@ -47,8 +51,12 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun login(loginInfo: LoginRequest): Flow<Resource<LoginResponse>> = flow {
         emit(Resource.Loading())
-        val response = userApi.login(loginInfo.toLoginRequestDto())
-        emit(Resource.Success(data = response.toLoginResponse()))
+        try {
+            val response = userApi.login(loginInfo.toLoginRequestDto())
+            emit(Resource.Success(data = response.toLoginResponse()))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.localizedMessage.orEmpty()))
+        }
     }
 
     override fun updateUser(id: Long, userUpdateRequest: UserUpdateRequest): Flow<Resource<User>> = flow {

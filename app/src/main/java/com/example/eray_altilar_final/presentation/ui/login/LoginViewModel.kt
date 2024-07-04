@@ -68,7 +68,10 @@ class LoginViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     _uiState.update { state ->
-                        state.copy(isHaveError = true, errorMessage = it.errorMessage.orEmpty())
+                        state.copy(
+                            isHaveError = true,
+                            errorMessage = it.errorMessage.orEmpty(),
+                        )
                     }
                 }
 
@@ -89,6 +92,7 @@ class LoginViewModel @Inject constructor(
                     _uiState.update { state ->
                         state.copy(
                             loadingState = false,
+                            isHaveError = false,
                             isLoginSuccess = true,
                             loggedUser = it.data,
                         )
@@ -100,7 +104,10 @@ class LoginViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     _uiState.update { state ->
-                        state.copy(isHaveError = true, errorMessage = it.errorMessage.orEmpty())
+                        state.copy(
+                            isHaveError = true,
+                            errorMessage = it.errorMessage.orEmpty(),
+                        )
                     }
                 }
             }

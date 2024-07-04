@@ -61,11 +61,11 @@ fun LoginScreen(
 
         if (isHaveError) {
             Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
-            return@with
         }
 
         if (isLoginSuccess) {
             navigate()
+            return@with
         }
 
         if (isFetchSuccessful) {
